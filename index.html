@@ -1,170 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Ninito | سیستم یکپارچه مدیریت</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Tahoma, Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1100px;
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 52px;
-            font-weight: bold;
-            color: #2563eb;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-
-        p {
-            font-size: 18px;
-            color: #6b7280;
-            line-height: 1.8;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 14px 30px;
-            background: #2563eb;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-        }
-
-        .card {
-            margin-top: 50px;
-            background: white;
-            padding: 35px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .feature {
-            padding: 25px;
-            border: 1px solid #e5e7eb;
-            border-radius: 15px;
-        }
-
-        .feature h3 {
-            margin-bottom: 10px;
-            color: #2563eb;
-        }
-
-        .feature p {
-            font-size: 14px;
-            margin-bottom: 0;
-        }
-
-        @media (max-width: 700px) {
-            .logo {
-                font-size: 40px;
-            }
-
-            h1 {
-                font-size: 27px;
-            }
-
-            .features {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1020">
+<title>NINITO • مدیریت حرفه‌ای انبار</title>
+<style>
+:root{--bg:#f4f6fa;--surface:#fff;--surface2:#f8fafc;--ink:#172033;--muted:#6b7280;--line:#e5e7eb;--primary:#5b5cf0;--primary2:#7c3aed;--success:#16a34a;--warning:#d97706;--danger:#dc2626;--info:#0284c7;--shadow:0 10px 30px rgba(15,23,42,.07);--radius:18px;--sidebar:270px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Vazirmatn,IRANSans,Segoe UI,Tahoma,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}a{text-decoration:none;color:inherit}
+.app{min-height:100vh;display:flex}.sidebar{width:var(--sidebar);position:fixed;inset:0 auto 0 0;background:#0b1020;color:#dbe4ff;padding:18px 14px;z-index:30;display:flex;flex-direction:column;overflow:auto;direction:rtl}.brand{display:flex;align-items:center;gap:11px;padding:8px 10px 22px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:grid;place-items:center;font-weight:900;color:white;box-shadow:0 8px 24px #4f46e555}.brand b{font-size:18px;letter-spacing:.5px}.brand small{display:block;color:#8f9bb8;font-size:10px;margin-top:2px}.nav-group{margin:12px 6px}.nav-title{font-size:10px;color:#69748f;margin:0 10px 7px}.nav-btn{width:100%;border:0;background:transparent;color:#b9c3dc;text-align:right;border-radius:12px;padding:11px 12px;display:flex;align-items:center;gap:10px;margin:3px 0}.nav-btn:hover,.nav-btn.active{background:#ffffff10;color:#fff}.nav-btn.active{box-shadow:inset -3px 0 0 #7c83ff;background:linear-gradient(90deg,#ffffff05,#ffffff0c)}.nav-icon{width:23px;text-align:center;font-size:16px}.side-bottom{margin-top:auto;padding:10px 6px}.warehouse-chip{background:#ffffff08;border:1px solid #ffffff10;border-radius:15px;padding:12px;color:#dbe4ff}.warehouse-chip small{color:#8f9bb8}.main{margin-left:var(--sidebar);width:calc(100% - var(--sidebar));min-width:0}.topbar{height:76px;background:#ffffffd9;backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px;position:sticky;top:0;z-index:20}.top-right,.top-left{display:flex;align-items:center;gap:10px}.crumb{font-size:13px;color:var(--muted)}.crumb b{color:var(--ink)}.search{width:min(360px,32vw);background:var(--surface2);border:1px solid var(--line);border-radius:12px;padding:10px 13px;outline:none}.icon-btn{border:1px solid var(--line);background:white;width:40px;height:40px;border-radius:12px}.avatar{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#111827,#4f46e5);color:white;display:grid;place-items:center;font-size:13px;font-weight:800}.content{padding:25px;max-width:1700px;margin:auto}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px}.page-head h1{margin:0;font-size:25px}.page-head p{margin:7px 0 0;color:var(--muted);font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:white;color:var(--ink);padding:10px 14px;border-radius:12px;font-weight:700;font-size:12px}.btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;border:0;box-shadow:0 8px 18px #5b5cf033}.btn.danger{color:var(--danger)}.btn:active{transform:translateY(1px)}.grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(5,minmax(0,1fr));margin-bottom:18px}.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.stat{padding:16px}.stat .label{font-size:11px;color:var(--muted)}.stat .value{font-size:24px;font-weight:900;margin:8px 0}.stat .meta{font-size:10px;color:var(--muted)}.stat .trend{color:var(--success);font-weight:800}.workspace{grid-template-columns:minmax(0,1.65fr) minmax(280px,.8fr)}.panel{padding:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-title{font-size:14px;font-weight:900}.panel-sub{font-size:10px;color:var(--muted);margin-top:3px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.field{position:relative}.field input,.field select,.field textarea{border:1px solid var(--line);background:#fff;border-radius:11px;padding:10px 11px;outline:none;width:100%;font-size:12px}.field input:focus,.field select:focus,.field textarea:focus{border-color:#818cf8;box-shadow:0 0 0 3px #6366f11a}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}.table{width:100%;border-collapse:collapse;min-width:760px}.table th{background:var(--surface2);font-size:10px;color:var(--muted);text-align:right;white-space:nowrap}.table td,.table th{padding:12px;border-bottom:1px solid var(--line)}.table td{font-size:11px}.table tr:last-child td{border-bottom:0}.badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:800}.green{background:#dcfce7;color:#166534}.yellow{background:#fef3c7;color:#92400e}.red{background:#fee2e2;color:#991b1b}.blue{background:#e0f2fe;color:#075985}.gray{background:#f1f5f9;color:#475569}.purple{background:#ede9fe;color:#5b21b6}.mini{font-size:10px;color:var(--muted)}.progress{height:7px;background:#eef2f7;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:linear-gradient(90deg,#6366f1,#8b5cf6);border-radius:99px}.kpi-list{display:grid;gap:10px}.kpi{padding:12px;background:var(--surface2);border-radius:13px}.kpi-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:11px}.quick{grid-template-columns:repeat(4,1fr);margin-top:14px}.quick button{padding:16px;text-align:right;background:white;border:1px solid var(--line);border-radius:15px}.quick b{display:block;font-size:12px;margin-bottom:5px}.quick span{font-size:10px;color:var(--muted)}.view{display:none}.view.active{display:block}.section-card{padding:18px;margin-bottom:14px}.form-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.form-grid .wide{grid-column:span 2}.form-grid .full{grid-column:1/-1}.field label{display:block;font-size:10px;color:var(--muted);margin:0 0 6px}.empty{padding:40px;text-align:center;color:var(--muted)}.drawer{position:fixed;inset:0;background:#0b102055;z-index:60;display:none}.drawer.open{display:block}.drawer-panel{position:absolute;right:0;top:0;height:100%;width:min(560px,100%);background:white;box-shadow:-20px 0 60px #0002;padding:22px;overflow:auto}.drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.drawer-head h2{margin:0;font-size:18px}.mobile-menu{display:none}.toast{position:fixed;bottom:22px;left:22px;background:#111827;color:white;padding:12px 16px;border-radius:12px;box-shadow:0 10px 35px #0003;z-index:100;display:none;font-size:11px}.toast.show{display:block}.mobile-nav{display:none}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.workspace{grid-template-columns:1fr}.form-grid{grid-template-columns:repeat(2,1fr)}.quick{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){:root{--sidebar:0px}.sidebar{display:none}.main{margin:0;width:100%;padding-bottom:68px}.topbar{height:64px;padding:0 13px}.mobile-menu{display:grid}.search{width:42px;padding:0;text-align:center;font-size:0}.search:after{content:'⌕';font-size:19px}.crumb{display:none}.content{padding:16px 12px}.page-head{display:block}.page-head .actions{margin-top:13px}.stats{grid-template-columns:repeat(2,1fr);gap:9px}.stat .value{font-size:20px}.panel{padding:13px}.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}.quick{grid-template-columns:1fr 1fr}.mobile-nav{display:flex;position:fixed;bottom:0;right:0;left:0;height:62px;background:#fff;border-top:1px solid var(--line);z-index:50;justify-content:space-around;padding:6px}.mobile-nav button{border:0;background:transparent;font-size:9px;color:var(--muted)}.mobile-nav button b{display:block;font-size:17px;margin-bottom:2px}.table{min-width:680px}}
+</style>
 </head>
-
 <body>
-
-    <main class="container">
-
-        <div class="logo">
-            Ninito
-        </div>
-
-        <h1>
-            سیستم یکپارچه مدیریت کسب‌وکار
-        </h1>
-
-        <p>
-            مدیریت انبار، حسابداری، فروش و سفارشات
-            در یک سیستم یکپارچه و قدرتمند.
-        </p>
-
-        <a href="#" class="btn">
-            شروع کار
-        </a>
-
-        <section class="card">
-
-            <h2>
-                امکانات Ninito
-            </h2>
-
-            <div class="features">
-
-                <div class="feature">
-                    <h3>📦 انبارداری</h3>
-                    <p>
-                        مدیریت کالاها، موجودی، ورود و خروج کالا
-                    </p>
-                </div>
-
-                <div class="feature">
-                    <h3>💰 حسابداری</h3>
-                    <p>
-                        مدیریت تراکنش‌ها، درآمدها و هزینه‌ها
-                    </p>
-                </div>
-
-                <div class="feature">
-                    <h3>🛒 فروش</h3>
-                    <p>
-                        مدیریت محصولات، سفارشات و مشتریان
-                    </p>
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
-
-</body>
-</html>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">N</div><div><b>NINITO</b><small>Warehouse Intelligence</small></div></div>
+  <div class="nav-group"><div class="nav-title">عملیات انبار</div>
+    <button class="nav-btn active" data-view="dashboard"><span class="nav-icon">▦</span>داشبورد انبار</button>
+    <button class="nav-btn" data-view="inventory"><span class="nav-icon">▤</span>موجودی کالا</button>
+    <button class="nav-btn" data-view="transactions"><span class="nav-icon">↕</span>کاردکس و گردش کالا</button>
+    <button class="nav-btn" data-view="receiving"><span class="nav-icon">↓</span>دریافت و ورود کالا</button>
+    <button class="nav-btn" data-view="issuing"><span class="nav-icon">↑</span>خروج و تحویل کالا</button>
+    <button class="nav-btn" data-view="transfer"><span class="nav-icon">⇄</span>انتقال بین انبارها</button>
+    <button class="nav-btn" data-view="adjustment"><span class="nav-icon">±</span>اصلاح موجودی</button>
+    <button class="nav-btn" data-view="reservation"><span class="nav-icon">◷</span>رزرو موجودی</button>
+  </div>
+  <div class="nav-group"><div class="nav-title">ساختار انبار</div>
+    <button class="nav-btn" data-view="warehouses"><span class="nav-icon">⌂</span>انبارها و موقعیت‌ها</button>
+    <button class="nav-btn" data-view="materials"><span class="nav-icon">◈</span>مواد اولیه</button>
+    <button class="nav-btn" data-view="products"><span class="nav-icon">□</span>کالا و تنوع‌ها</button>
+    <button class="nav-btn" data-view="reports"><span class="nav-icon">▥</span>گزارش‌های انبار</button>
+  </div>
+  <div class="side-bottom"><div class="warehouse-chip"><small>انبار فعال</small><br><b>انبار مرکزی • MAIN</b><div style="margin-top:7px" class="mini">مشهد، خراسان رضوی</div></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="top-right"><button class="icon-btn mobile-menu" id="mobileMenu">☰</button><div class="crumb">NINITO / <b id="crumb">داشبورد انبار</b></div></div><div class="top-left"><input id="globalSearch" class="search" placeholder="جستجوی سریع کالا، SKU، بارکد..."><button class="icon-btn" title="اعلان‌ها">♢</button><div class="avatar">مد</div></div></header>
+<div class="content">
+<section id="dashboard" class="view active">
+<div class="page-head"><div><h1>داشبورد انبار</h1><p>نمای لحظه‌ای وضعیت موجودی، گردش کالا، رزروها و عملیات انبار</p></div><div class="actions"><button class="btn" onclick="openDrawer('receive')">＋ دریافت کالا</button><button class="btn primary" onclick="openDrawer('adjust')">＋ ثبت عملیات انبار</button></div></div>
+<div class="grid stats">
+ <div class="card stat"><div class="label">ارزش تقریبی موجودی</div><div class="value">۲٫۴۸ میلیارد</div><div class="meta">ریال • <span class="trend">+۸٫۴٪</span> نسبت به ماه قبل</div></div>
+ <div class="card stat"><div class="label">تعداد اقلام فعال</div><div class="value">۱,۲۸۶</div><div class="meta">کالا و مواد اولیه</div></div>
+ <div class="card stat"><div class="label">موجودی کم</div><div class="value">۲۷</div><div class="meta"><span class="badge yellow">نیازمند بررسی</span></div></div>
+ <div class="card stat"><div class="label">رزرو شده</div><div class="value">۱۸۴</div><div class="meta">واحد آماده تخصیص</div></div>
+ <div class="card stat"><div class="label">عملیات امروز</div><div class="value">۷۳</div><div class="meta">ورود، خروج، انتقال و اصلاح</div></div>
+</div>
+<div class="grid workspace">
+ <div class="card panel"><div class="panel-head"><div><div class="panel-title">عملیات اخیر</div><div class="panel-sub">آخرین گردش‌های ثبت‌شده در انبار</div></div><button class="btn" onclick="setView('transactions')">مشاهده کاردکس</button></div>
+ <div class="table-wrap"><table class="table"><thead><tr><th>شماره</th><th>نوع عملیات</th><th>کالا / ماده</th><th>مقدار</th><th>کاربر</th><th>زمان</th><th>وضعیت</th></tr></thead><tbody id="recentTable"></tbody></table></div></div>
+ <div class="card panel"><div class="panel-head"><div><div class="panel-title">کنترل موجودی</div><div class="panel-sub">مواردی که نیاز به اقدام دارند</div></div></div><div class="kpi-list">
+  <div class="kpi"><div class="kpi-row"><span>موجودی زیر نقطه سفارش</span><b>۲۷</b></div><div class="progress"><i style="width:58%"></i></div></div>
+  <div class="kpi"><div class="kpi-row"><span>رزروهای منقضی نشده</span><b>۱۸۴</b></div><div class="progress"><i style="width:74%"></i></div></div>
+  <div class="kpi"><div class="kpi-row"><span>سفارش‌های در انتظار دریافت</span><b>۹</b></div><div class="progress"><i style="width:36%"></i></div></div>
+  <div class="kpi"><div class="kpi-row"><span>اصلاحات نیازمند تأیید</span><b>۳</b></div><div class="progress"><i style="width:18%"></i></div></div>
+ </div></div>
+</div>
+<div class="grid quick"><button onclick="openDrawer('receive')"><b>📥 دریافت کالا</b><span>ثبت ورود از خرید یا تأمین‌کننده</span></button><button onclick="openDrawer('issue')"><b>📤 خروج کالا</b><span>خروج فروش، نمونه، هدیه یا مصرف</span></button><button onclick="openDrawer('transfer')"><b>⇄ انتقال</b><span>انتقال بین موقعیت‌ها و انبارها</span></button><button onclick="openDrawer('adjust')"><b>± اصلاح موجودی</b><span>ثبت مغایرت با علت و کاربر</span></button></div>
+</section>
+<section id="inventory" class="view"><div class="page-head"><div><h1>موجودی کالا</h1><p>کنترل موجودی بر اساس انبار، موقعیت، SKU و نوع موجودی</p></div><div class="actions"><button class="btn" onclick="exportCSV()">خروجی CSV</button><button class="btn primary" onclick="openDrawer('adjust')">＋ اصلاح موجودی</button></div></div>
+<div class="card section-card"><div class="toolbar"><div class="field" style="flex:1;min-width:220px"><input id="invSearch" placeholder="جستجو نام کالا، SKU، بارکد یا کد ماده..."></div><div class="field"><select><option>همه انبارها</option><option>انبار مرکزی</option></select></div><div class="field"><select><option>همه وضعیت‌ها</option><option>موجود</option><option>کمبود</option><option>ناموجود</option></select></div></div><div class="table-wrap"><table class="table"><thead><tr><th>کد</th><th>نام</th><th>نوع</th><th>موقعیت</th><th>موجودی</th><th>رزرو</th><th>قابل فروش/مصرف</th><th>میانگین بها</th><th>وضعیت</th></tr></thead><tbody id="inventoryTable"></tbody></table></div></div></section>
+<section id="transactions" class="view"><div class="page-head"><div><h1>کاردکس و گردش کالا</h1><p>ردیابی کامل transactionهای inventory_transactions با مرجع و هزینه</p></div><button class="btn" onclick="exportCSV()">خروجی گزارش</button></div><div class="card section-card"><div class="toolbar"><input class="search" style="width:250px" placeholder="شماره مرجع، SKU یا نام کالا"><select class="btn"><option>همه عملیات</option><option>خرید</option><option>فروش</option><option>انتقال</option><option>اصلاح</option><option>مصرف تولید</option></select><button class="btn">از تاریخ</button><button class="btn">تا تاریخ</button></div><div class="table-wrap"><table class="table"><thead><tr><th>تاریخ</th><th>نوع</th><th>مرجع</th><th>کالا/ماده</th><th>مقدار</th><th>بهای واحد</th><th>بهای کل</th><th>ثبت‌کننده</th><th>یادداشت</th></tr></thead><tbody id="txTable"></tbody></table></div></div></section>
+<section id="receiving" class="view"><FormView title="دریافت و ورود کالا" desc="ثبت دریافت خرید و ایجاد گردش موجودی با مرجع رسید انبار" kind="receive" /></section>
+<section id="issuing" class="view"><FormView title="خروج و تحویل کالا" desc="ثبت خروج کالا، مصرف، نمونه، هدیه یا خروج فروش" kind="issue" /></section>
+<section id="transfer" class="view"><FormView title="انتقال موجودی" desc="جابجایی کنترل‌شده بین انبارها و موقعیت‌ها" kind="transfer" /></section>
+<section id="adjustment" class="view"><FormView title="اصلاح موجودی" desc="ثبت اختلاف شمارش، علت، مقدار قبلی و مقدار جدید" kind="adjust" /></section>
+<section id="reservation" class="view"><div class="page-head"><div><h1>رزرو موجودی</h1><p>کنترل رزروها و جلوگیری از فروش بیش از موجودی قابل تخصیص</p></div><button class="btn primary" onclick="openDrawer('reservation')">＋ رزرو جدید</button></div><div class="card section-card"><div class="table-wrap"><table class="table"><thead><tr><th>شناسه</th><th>کالا</th><th>انبار</th><th>مقدار</th><th>مرجع</th><th>انقضا</th><th>وضعیت</th></tr></thead><tbody id="reservationTable"></tbody></table></div></div></section>
+<section id="warehouses" class="view"><Crud title="انبارها و موقعیت‌ها" desc="مدیریت warehouses و warehouse_locations" headers="کد,نام,نوع موقعیت,انبار,وضعیت" rows="MAIN,انبار مرکزی,storage,انبار مرکزی,فعال|RCV,دریافت,receiving,انبار مرکزی,فعال|SHP,ارسال,shipping,انبار مرکزی,فعال|PRD,تولید,production,انبار مرکزی,فعال"/></section>
+<section id="materials" class="view"><Crud title="مواد اولیه" desc="مدیریت مواد اولیه، واحد، حداقل موجودی و تأمین‌کننده" headers="کد,نام ماده,واحد,حداقل,نقطه سفارش,بهای استاندارد" rows="MAT-001,پارچه پنبه‌ای,متر,100,250,185000|MAT-002,نخ دوخت سفید,کیلوگرم,10,25,4200000|MAT-003,دکمه صدفی,عدد,500,1200,8500|MAT-004,زیپ ۲۰ سانتی,عدد,300,700,18500"/></section>
+<section id="products" class="view"><Crud title="کالا و تنوع‌ها" desc="دسترسی سریع به products، variants و SKU" headers="SKU,نام کالا,تنوع,بارکد,وضعیت" rows="NIN-BD-001-S,بادی نوزادی,سفید / ۰-۳ ماه,6261234500012,فعال|NIN-BD-001-M,بادی نوزادی,سفید / ۳-۶ ماه,6261234500013,فعال|NIN-SL-002-M,سرهمی نخی,آبی / ۳-۶ ماه,6261234500021,فعال|NIN-TS-003-L,تیشرت کودک,زرد / ۶-۱۲ ماه,6261234500038,فعال"/></section>
+<section id="reports" class="view"><div class="page-head"><div><h1>گزارش‌های انبار</h1><p>گزارش‌هایی که برای تصمیم‌گیری مدیریت و حسابداری لازم است</p></div></div><div class="grid quick"><button><b>ارزش موجودی</b><span>بر اساس average_cost</span></button><button><b>کاردکس کالا</b><span>ورود، خروج و مانده</span></button><button><b>موجودی کم</b><span>minimum_stock / reorder_point</span></button><button><b>گردش انبار</b><span>تحلیل خرید، فروش و تولید</span></button><button><b>مغایرت موجودی</b><span>inventory_adjustments</span></button><button><b>رزروهای باز</b><span>inventory_reservations</span></button></div></section>
+</div>
+<nav class="mobile-nav"><button onclick="setView('dashboard')"><b>▦</b>خانه</button><button onclick="setView('inventory')"><b>▤</b>موجودی</button><button onclick="setView('transactions')"><b>↕</b>کاردکس</button><button onclick="openDrawer('receive')"><b>＋</b>عملیات</button></nav>
+</main></div>
+<div class="drawer" id="drawer" onclick="if(event.target===this)closeDrawer()"><div class="drawer-panel"><div class="drawer-head"><h2 id="drawerTitle">عملیات انبار</h2><button class="icon-btn" onclick="closeDrawer()">×</button></div><div id="drawerBody"></div></div></div><div class="toast" id="toast"></div>
+<script>
+const recent=[['TX-10482','ورود خرید','پارچه پنبه‌ای','+۳۵۰ متر','انباردار','امروز ۱۴:۲۲','green','ثبت شد'],['TX-10481','خروج فروش','بادی نوزادی / سفید','−۲۴ عدد','سیستم فروش','امروز ۱۳:۵۷','blue','تأیید'],['TX-10480','انتقال','نخ دوخت سفید','۱۲۰ کیلو','مدیر انبار','امروز ۱۲:۴۱','purple','ثبت شد'],['TX-10479','اصلاح موجودی','دکمه صدفی','+۴۵ عدد','انباردار','امروز ۱۱:۱۸','yellow','نیازمند بررسی'],['TX-10478','مصرف تولید','پارچه پنبه‌ای','−۱۸۰ متر','تولید','امروز ۱۰:۳۵','gray','ثبت شد']];
+const inv=[['MAT-001','پارچه پنبه‌ای','ماده اولیه','A-01-03','۳۵۰','۰','۳۵۰','۱۸۵,۰۰۰','green','موجود'],['NIN-BD-001-S','بادی نوزادی','کالا / سفید ۰-۳','B-02-01','۸۶','۲۴','۶۲','۱,۴۸۰,۰۰۰','green','موجود'],['MAT-003','دکمه صدفی','ماده اولیه','A-03-02','۴۸۰','۰','۴۸۰','۸,۵۰۰','yellow','کمبود'],['NIN-SL-002-M','سرهمی نخی','کالا / آبی ۳-۶','B-01-05','۱۲','۸','۴','۲,۳۵۰,۰۰۰','red','بحرانی'],['MAT-002','نخ دوخت سفید','ماده اولیه','A-02-01','۱۸','۵','۱۳','۴,۲۰۰,۰۰۰','yellow','کمبود']];
+const tx=[['۱۴۰۵/۰۵/۲۱ ۱۴:۲۲','purchase','PO-1405-0182','پارچه پنبه‌ای','۳۵۰ متر','۱۸۵,۰۰۰','۶۴,۷۵۰,۰۰۰','انباردار','رسید خرید'],['۱۴۰۵/۰۵/۲۱ ۱۳:۵۷','sale','SO-1405-0741','بادی نوزادی','۲۴ عدد','۱,۴۸۰,۰۰۰','۳۵,۵۲۰,۰۰۰','سیستم','سفارش اینترنتی'],['۱۴۰۵/۰۵/۲۱ ۱۲:۴۱','transfer','TR-1405-0098','نخ دوخت سفید','۱۲۰ کیلو','۴,۲۰۰,۰۰۰','۵۰۴,۰۰۰,۰۰۰','مدیر انبار','A→PRD'],['۱۴۰۵/۰۵/۲۱ ۱۱:۱۸','adjustment_in','ADJ-1405-0031','دکمه صدفی','۴۵ عدد','۸,۵۰۰','۳۸۲,۵۰۰','انباردار','شمارش دوره‌ای'],['۱۴۰۵/۰۵/۲۱ ۱۰:۳۵','production_consumption','PRD-1405-0047','پارچه پنبه‌ای','۱۸۰ متر','۱۸۵,۰۰۰','۳۳,۳۰۰,۰۰۰','تولید','مصرف خط تولید']];
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function fill(){document.getElementById('recentTable').innerHTML=recent.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td><b>${r[3]}</b></td><td>${r[4]}</td><td class="mini">${r[5]}</td><td><span class="badge ${r[6]}">● ${r[7]}</span></td></tr>`).join('');document.getElementById('inventoryTable').innerHTML=inv.map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><b>${r[4]}</b></td><td>${r[5]}</td><td><b>${r[6]}</b></td><td>${r[7]}</td><td><span class="badge ${r[8]}">${r[9]}</span></td></tr>`).join('');document.getElementById('txTable').innerHTML=tx.map(r=>`<tr><td>${r[0]}</td><td><span class="badge blue">${r[1]}</span></td><td><b>${r[2]}</b></td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td><td>${r[7]}</td><td class="mini">${r[8]}</td></tr>`).join('');document.getElementById('reservationTable').innerHTML=[['RES-2041','بادی نوزادی / سفید','انبار مرکزی','۲۴ عدد','SO-1405-0741','۱۴۰۵/۰۵/۲۳','green','رزرو'],['RES-2040','سرهمی نخی / آبی','انبار مرکزی','۸ عدد','SO-1405-0739','۱۴۰۵/۰۵/۲۲','green','رزرو'],['RES-2038','نخ دوخت سفید','تولید','۵ کیلو','PRD-1405-0047','۱۴۰۵/۰۵/۲۱','yellow','در حال تبدیل']].map(r=>`<tr>${r.slice(0,6).map(x=>`<td>${x}</td>`).join('')}<td><span class="badge ${r[6]}">${r[7]}</span></td></tr>`).join('')}
+fill();
+const titles={dashboard:'داشبورد انبار',inventory:'موجودی کالا',transactions:'کاردکس و گردش کالا',receiving:'دریافت و ورود کالا',issuing:'خروج و تحویل کالا',transfer:'انتقال موجودی',adjustment:'اصلاح موجودی',reservation:'رزرو موجودی',warehouses:'انبارها و موقعیت‌ها',materials:'مواد اولیه',products:'کالا و تنوع‌ها',reports:'گزارش‌های انبار'};
+function setView(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id)?.classList.add('active');document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active',x.dataset.view===id));document.getElementById('crumb').textContent=titles[id]||'داشبورد انبار';window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('.nav-btn').forEach(b=>b.onclick=()=>setView(b.dataset.view));
+document.getElementById('mobileMenu').onclick=()=>toast('برای نسخه موبایل، منوی پایین صفحه فعال است.');
+function openDrawer(type){const map={receive:['ثبت دریافت کالا',`<form onsubmit="saveOperation(event,'دریافت کالا')"><div class="form-grid"><div class="field wide"><label>انبار مقصد</label><select><option>انبار مرکزی</option></select></div><div class="field"><label>شماره رسید</label><input value="GRN-1405-${Math.floor(Math.random()*9000+1000)}"></div><div class="field"><label>مرجع خرید</label><input placeholder="PO-1405-..." ></div><div class="field wide"><label>کالا / ماده اولیه</label><input required placeholder="جستجوی SKU، بارکد یا نام"></div><div class="field"><label>مقدار</label><input type="number" step="0.01" required></div><div class="field"><label>واحد</label><select><option>عدد</option><option>متر</option><option>کیلوگرم</option></select></div><div class="field full"><label>یادداشت</label><textarea rows="3" placeholder="توضیحات دریافت..."></textarea></div></div><div class="actions" style="margin-top:18px"><button class="btn primary">ثبت دریافت</button><button type="button" class="btn" onclick="closeDrawer()">انصراف</button></div></form>`],issue:['ثبت خروج کالا',operationForm('خروج کالا','خروجی: فروش / مصرف / نمونه / هدیه')],transfer:['انتقال موجودی',`<form onsubmit="saveOperation(event,'انتقال موجودی')"><div class="form-grid"><div class="field"><label>مبدأ</label><select><option>انبار مرکزی / A-01</option></select></div><div class="field"><label>مقصد</label><select><option>انبار مرکزی / PRD</option></select></div><div class="field wide"><label>کالا / ماده</label><input required placeholder="SKU یا نام کالا"></div><div class="field"><label>مقدار</label><input required type="number" step="0.01"></div><div class="field"><label>واحد</label><select><option>عدد</option><option>متر</option><option>کیلوگرم</option></select></div><div class="field full"><label>علت انتقال</label><textarea rows="3"></textarea></div></div><div class="actions" style="margin-top:18px"><button class="btn primary">ثبت انتقال</button></div></form>`],adjust:['اصلاح موجودی',`<form onsubmit="saveOperation(event,'اصلاح موجودی')"><div class="form-grid"><div class="field"><label>انبار</label><select><option>انبار مرکزی</option></select></div><div class="field"><label>موقعیت</label><input placeholder="A-01-03"></div><div class="field wide"><label>کالا / ماده</label><input required placeholder="SKU یا کد ماده"></div><div class="field"><label>موجودی فعلی</label><input type="number" value="350"></div><div class="field"><label>موجودی واقعی</label><input required type="number"></div><div class="field full"><label>علت اصلاح</label><textarea required rows="3" placeholder="مثلاً: مغایرت شمارش دوره‌ای..."></textarea></div></div><div class="actions" style="margin-top:18px"><button class="btn primary">ثبت اصلاح</button></div></form>`],reservation:['رزرو موجودی',operationForm('رزرو موجودی','مرجع رزرو مانند سفارش فروش یا تولید') ]};let d=map[type]||map.adjust;document.getElementById('drawerTitle').textContent=d[0];document.getElementById('drawerBody').innerHTML=d[1];document.getElementById('drawer').classList.add('open')}
+function operationForm(title,ref){return `<form onsubmit="saveOperation(event,'${title}')"><div class="form-grid"><div class="field wide"><label>کالا / تنوع</label><input required placeholder="SKU، بارکد یا نام کالا"></div><div class="field"><label>انبار</label><select><option>انبار مرکزی</option></select></div><div class="field"><label>موقعیت</label><input placeholder="B-02-01"></div><div class="field"><label>مقدار</label><input required type="number" step="0.01"></div><div class="field"><label>واحد</label><select><option>عدد</option><option>متر</option><option>کیلوگرم</option></select></div><div class="field wide"><label>مرجع / نوع عملیات</label><input placeholder="${ref}"></div><div class="field full"><label>یادداشت</label><textarea rows="3"></textarea></div></div><div class="actions" style="margin-top:18px"><button class="btn primary">ثبت عملیات</button><button type="button" class="btn" onclick="closeDrawer()">انصراف</button></div></form>`}
+function saveOperation(e,label){e.preventDefault();closeDrawer();toast(`${label} با موفقیت در صف ثبت قرار گرفت.`)}function closeDrawer(){document.getElementById('drawer').classList.remove('open')}function toast(t){let x=document.getElementById('toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),2800)}
+function exportCSV(){let rows=[['کد','نام','نوع','موجودی','رزرو','وضعیت'],...inv.map(r=>[r[0],r[1],r[2],r[4],r[5],r[9]])];let csv='\\ufeff'+rows.map(r=>r.join(',')).join('\\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='ninito-inventory.csv';a.click();toast('گزارش CSV ساخته شد.')}
+customElements.define('FormView',class extends HTMLElement{connectedCallback(){const kind=this.getAttribute('kind'),title=this.getAttribute('title'),desc=this.getAttribute('desc');this.innerHTML=`<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div><div class="actions"><button class="btn" onclick="toast('پیش‌نویس ذخیره شد.')">ذخیره پیش‌نویس</button></div></div><div class="card section-card">${operationForm(title,'شماره مرجع مرتبط با عملیات')}</div>`}});
+customElements.define('Crud',class extends HTMLElement{connectedCallback(){const title=this.getAttribute('title'),desc=this.getAttribute('desc'),headers=this.getAttribute('headers').split(','),rows=this.getAttribute('rows').split('|').map(x=>x.split(','));this.innerHTML=`<div class="page-head"><div><h1>${title}</h1><p>${desc}</p></div><button class="btn primary" onclick="openDrawer('adjust')">＋ ثبت جدید</button></div><div class="card section-card"><div class="toolbar"><input class="search" style="width:260px" placeholder="جستجو..."><button class="btn">فیلتر</button></div><div class="table-wrap"><table class="table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((x,i)=>`<td>${i===r.length-1?`<span class="badge green">${x}</span>`:x}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>`}});
+</script>
+</body></html>
