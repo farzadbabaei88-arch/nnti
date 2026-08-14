@@ -1,1 +1,547 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>NINITO ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <style>
+        :root {
+            --p: #3157d5;
+            --dark: #142246;
+            --bg: #f4f7fb;
+            --bd: #e2e8f0;
+            --mut: #64748b;
+            --ok: #0e9b70;
+            --warn: #e3a219;
+            --bad: #d84c5c
+        }
 
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #172033;
+            font-family: Vazirmatn,Tahoma,sans-serif
+        }
+
+        .app {
+            display: grid;
+            grid-template-columns: 270px 1fr;
+            min-height: 100vh
+        }
+
+        .side {
+            background: linear-gradient(180deg,#111b37,#1c2d59);
+            color: #fff;
+            padding: 16px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow: auto
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 800;
+            padding: 12px;
+            border-bottom: 1px solid #ffffff18
+        }
+
+            .brand small {
+                display: block;
+                font-size: 10px;
+                color: #aebbd7;
+                margin-top: 4px
+            }
+
+        .nav {
+            margin-top: 16px
+        }
+
+            .nav h5 {
+                color: #94a5cc;
+                margin: 12px 8px 5px;
+                font-size: 10px
+            }
+
+            .nav button {
+                width: 100%;
+                border: 0;
+                background: transparent;
+                color: #dce5ff;
+                padding: 10px;
+                border-radius: 10px;
+                text-align: right;
+                font-family: inherit
+            }
+
+                .nav button:hover, .nav button.active {
+                    background: #ffffff15;
+                    color: #fff
+                }
+
+        .main {
+            min-width: 0
+        }
+
+        .top {
+            height: 70px;
+            background: #fffffff0;
+            border-bottom: 1px solid var(--bd);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            position: sticky;
+            top: 0;
+            z-index: 5
+        }
+
+        .content {
+            padding: 22px;
+            max-width: 1800px;
+            margin: auto
+        }
+
+        .view {
+            display: none
+        }
+
+            .view.active {
+                display: block;
+                animation: up .25s ease
+            }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(7px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .hero, .card {
+            background: #fff;
+            border: 1px solid var(--bd);
+            border-radius: 18px;
+            box-shadow: 0 10px 30px #0f172a0a;
+            padding: 18px
+        }
+
+        .hero {
+            background: linear-gradient(135deg,#15234b,#3157d5);
+            color: #fff
+        }
+
+            .hero h1 {
+                margin: 0 0 7px
+            }
+
+            .hero p {
+                margin: 0;
+                color: #dce5ff
+            }
+
+        .grid {
+            display: grid;
+            gap: 14px
+        }
+
+        .g4 {
+            grid-template-columns: repeat(4,1fr)
+        }
+
+        .g3 {
+            grid-template-columns: repeat(3,1fr)
+        }
+
+        .g2 {
+            grid-template-columns: repeat(2,1fr)
+        }
+
+        .stats {
+            margin-top: 14px
+        }
+
+        .stat {
+            min-height: 110px
+        }
+
+        .mut {
+            color: var(--mut);
+            font-size: 11px
+        }
+
+        .big {
+            font-size: 27px;
+            font-weight: 800;
+            margin-top: 7px
+        }
+
+        .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 18px 0 10px
+        }
+
+            .head h2 {
+                font-size: 16px;
+                margin: 0
+            }
+
+            .head p {
+                font-size: 11px;
+                color: var(--mut);
+                margin: 4px 0
+            }
+
+        .btn {
+            border: 1px solid var(--bd);
+            background: #fff;
+            border-radius: 10px;
+            padding: 9px 12px;
+            font: inherit;
+            font-size: 11px;
+            cursor: pointer
+        }
+
+            .btn:hover {
+                box-shadow: 0 5px 15px #0f172a12
+            }
+
+        .primary {
+            background: var(--p);
+            color: #fff;
+            border-color: var(--p)
+        }
+
+        .success {
+            background: var(--ok);
+            color: #fff;
+            border-color: var(--ok)
+        }
+
+        .warning {
+            background: var(--warn);
+            color: #fff;
+            border-color: var(--warn)
+        }
+
+        .danger {
+            background: var(--bad);
+            color: #fff;
+            border-color: var(--bad)
+        }
+
+        .form {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 11px
+        }
+
+        .f2 {
+            grid-column: span 2
+        }
+
+        .f4 {
+            grid-column: 1/-1
+        }
+
+        label {
+            font-size: 10px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 5px
+        }
+
+        .req:after {
+            content: ' *';
+            color: var(--bad)
+        }
+
+        input, select, textarea {
+            width: 100%;
+            border: 1px solid #d5dce7;
+            border-radius: 9px;
+            padding: 9px;
+            background: #fff;
+            font: inherit;
+            font-size: 11px;
+            outline: 0
+        }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: #7288e8;
+                box-shadow: 0 0 0 3px #3157d515
+            }
+
+        textarea {
+            min-height: 70px
+        }
+
+        .row {
+            display: flex;
+            gap: 5px
+        }
+
+            .row > *:first-child {
+                flex: 1
+            }
+
+        .plus, .scan {
+            width: 36px;
+            padding: 0
+        }
+
+        .unit {
+            display: flex;
+            gap: 5px
+        }
+
+            .unit input {
+                flex: 1
+            }
+
+        .u {
+            background: #eef2f7;
+            border-radius: 8px;
+            padding: 8px;
+            min-width: 55px;
+            text-align: center;
+            font-size: 10px;
+            color: #475569
+        }
+
+        .table {
+            overflow: auto;
+            border: 1px solid var(--bd);
+            border-radius: 12px;
+            margin-top: 12px
+        }
+
+            .table table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 800px
+            }
+
+            .table th, .table td {
+                padding: 8px;
+                border-bottom: 1px solid #edf1f6;
+                text-align: right;
+                font-size: 10px
+            }
+
+            .table th {
+                background: #f8fafc;
+                color: #475569;
+                white-space: nowrap
+            }
+
+            .table tr:hover td {
+                background: #fbfdff
+            }
+
+        .kpis {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 10px
+        }
+
+        .kpi {
+            background: #f7f9fc;
+            padding: 9px 12px;
+            border-radius: 9px;
+            font-size: 10px
+        }
+
+            .kpi b {
+                font-size: 14px
+            }
+
+        .toast {
+            display: none;
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 9999;
+            background: #182033;
+            color: #fff;
+            padding: 13px 16px;
+            border-radius: 11px;
+            max-width: 450px
+        }
+
+        .load {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #fff8;
+            backdrop-filter: blur(2px);
+            z-index: 9998;
+            place-items: center
+        }
+
+            .load.on {
+                display: grid
+            }
+
+        .spin {
+            width: 45px;
+            height: 45px;
+            border: 4px solid #dbe2ef;
+            border-top-color: var(--p);
+            border-radius: 50%;
+            animation: sp .7s linear infinite
+        }
+
+        @keyframes sp {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .mobile {
+            display: none
+        }
+
+        .scanner video {
+            width: 100%;
+            background: #000;
+            border-radius: 10px
+        }
+
+        .helpgrid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 14px
+        }
+
+        .pill {
+            background: #eef2ff;
+            color: #3349b7;
+            border-radius: 99px;
+            padding: 6px 10px;
+            font-size: 10px
+        }
+
+        @media(max-width:1000px) {
+            .g4 {
+                grid-template-columns: repeat(2,1fr)
+            }
+
+            .form {
+                grid-template-columns: repeat(2,1fr)
+            }
+        }
+
+        @media(max-width:700px) {
+            .app {
+                display: block
+            }
+
+            .side {
+                position: fixed;
+                right: -290px;
+                width: 270px;
+                z-index: 20;
+                transition: .2s
+            }
+
+                .side.open {
+                    right: 0
+                }
+
+            .mobile {
+                display: inline-block
+            }
+
+            .content {
+                padding: 12px
+            }
+
+            .g4, .g3, .g2, .form, .helpgrid {
+                grid-template-columns: 1fr
+            }
+
+            .f2 {
+                grid-column: auto
+            }
+
+            .top {
+                padding: 0 10px
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="load" id="loading"><div class="spin"></div></div><div class="toast" id="toast"></div><div class="app">
+        <aside class="side" id="side"><div class="brand">NINITO ERP<small>سیستم جامع انبار، تولید و حسابداری</small></div><div class="nav"><h5>عملیات</h5><button data-v="dashboard" class="active">◈ داشبورد</button><button data-v="receiving">↓ دریافت و رسید کالا</button><button data-v="inventory">▦ موجودی و عملیات انبار</button><button data-v="production">⚙ تولید و درخواست مواد</button><button data-v="subcontract">⇄ چاپخانه و پیمانکاری</button><button data-v="returns">↩ عودت و کنترل کیفیت</button><h5>اطلاعات پایه و مالی</h5><button data-v="masters">✦ کالا، اشخاص، انبارها</button><button data-v="finance">₿ حساب‌ها، پرداخت و چک</button><button data-v="generic">☷ همه جداول ERP</button><h5>گزارش</h5><button data-v="reports">▤ گزارش‌های جامع</button><button data-v="help">? راهنما و تنظیمات</button></div></aside><main class="main">
+            <header class="top"><div><button class="btn mobile" id="menu">☰</button> <b id="title">داشبورد</b><div class="mut" id="status">در حال اتصال...</div></div><div><span class="pill">Cloudflare D1 / db1</span> <button class="btn" id="refresh">↻ بروزرسانی</button></div></header><section class="content">
+                <div id="v-dashboard" class="view active"><div class="hero"><h1>مرکز کنترل NINITO</h1><p>وضعیت زنده موجودی، رسیدهای موقت، تولید، پیمانکاری، چک و هزینه‌ها.</p></div><div class="grid g4 stats"><div class="card stat"><div class="mut">موجودی کل</div><div class="big" id="onhand">—</div></div><div class="card stat"><div class="mut">قابل استفاده</div><div class="big" id="available">—</div></div><div class="card stat"><div class="mut">رسید موقت</div><div class="big" id="pending">—</div></div><div class="card stat"><div class="mut">طرف حساب‌ها</div><div class="big" id="parties">—</div></div></div><div class="grid g4 stats"><div class="card stat"><div class="mut">تولید باز</div><div class="big" id="prod">—</div></div><div class="card stat"><div class="mut">پیمانکاری باز</div><div class="big" id="sub">—</div></div><div class="card stat"><div class="mut">چک‌های باز</div><div class="big" id="checks">—</div></div><div class="card stat"><div class="mut">هزینه ثبت‌شده</div><div class="big" id="expenses">—</div></div></div><div class="head"><div><h2>آخرین فعالیت‌ها</h2></div></div><div class="card"><div id="audit"></div></div></div>
+
+                <div id="v-receiving" class="view"><div class="head"><div><h2>دریافت کالا و رسید موقت / دائم</h2><p>ورود اولیه موقت است؛ انباردار پس از بررسی آن را دائم می‌کند.</p></div><button class="btn primary" onclick="genericCreate('goods_receipts')">＋ رسید جدید</button></div><div class="card"><form class="form" onsubmit="save(event,'goods_receipts')"><div><label class="req">شماره رسید</label><input name="receipt_no" required></div><div><label class="req">تاریخ</label><input name="receipt_date" type="date" required></div><div><label class="req">انبار</label><div class="row"><select name="warehouse_id" id="rwh" required></select><button type="button" class="btn plus" onclick="quick('warehouses','rwh')">＋</button></div></div><div><label>تأمین‌کننده</label><div class="row"><select name="party_id" id="rparty"></select><button type="button" class="btn plus" onclick="quick('parties','rparty')">＋</button></div></div><div><label>فاکتور خرید</label><input name="purchase_invoice_id" type="number"></div><div><label>مرحله</label><select name="receipt_stage"><option value="temporary">رسید موقت</option><option value="permanent">رسید دائم</option></select></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="posted">ثبت‌شده</option></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn primary">ثبت رسید</button></div></form></div><div class="head"><h2>رسیدهای موجود</h2></div><div class="card" id="receiptList"></div></div>
+
+                <div id="v-inventory" class="view"><div class="head"><div><h2>موجودی و عملیات انبار</h2><p>Dropdownها مستقیماً از D1 تازه‌سازی می‌شوند.</p></div></div><div class="grid g2"><div class="card"><h2>موجودی کالا</h2><form class="form" onsubmit="event.preventDefault();inventory()"><div class="f2"><label>کالا / SKU / بارکد</label><div class="row"><select id="ii"></select><button type="button" class="btn plus" onclick="quick('items','ii')">＋</button><button type="button" class="btn scan" onclick="scan('ii')">▣</button></div></div><div><label>انبار</label><select id="iw"></select></div><div><label>محل</label><select id="il"></select></div><div class="f4"><button class="btn primary">نمایش موجودی</button> <button type="button" class="btn" onclick="excel('invTable','موجودی')">Excel</button><button type="button" class="btn" onclick="printReport('invTable','گزارش موجودی')">چاپ</button></div></form><div id="invKpi" class="kpis"></div><div id="invTable"></div></div><div class="card"><h2>انتقال بین انبارها</h2><form class="form" onsubmit="createPost(event,'inventory_transfers','transfer')"><div class="f2"><label class="req">SKU / بارکد</label><div class="row"><select name="item_id" id="ti" required></select><button type="button" class="btn plus" onclick="quick('items','ti')">＋</button><button type="button" class="btn scan" onclick="scan('ti')">▣</button></div></div><div><label class="req">مقدار</label><div class="unit"><input name="quantity" type="number" step="any" required><span class="u" id="tu">واحد</span></div></div><div><label>شماره انتقال</label><input name="transfer_no"></div><div><label class="req">انبار مبدا</label><select name="from_warehouse_id" id="tfw" required></select></div><div><label class="req">محل مبدا</label><select name="from_location_id" id="tfl" required></select></div><div><label class="req">انبار مقصد</label><select name="to_warehouse_id" id="ttw" required></select></div><div><label class="req">محل مقصد</label><select name="to_location_id" id="ttl" required></select></div><div><label>تاریخ</label><input name="transfer_date" type="date"></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn primary">ثبت و اعمال انتقال اتمیک</button></div></form></div></div><div class="grid g2" style="margin-top:14px"><div class="card"><h2>تعدیل موجودی</h2><form class="form" onsubmit="createPost(event,'inventory_adjustments','adjust')"><div class="f2"><label class="req">کالا</label><div class="row"><select name="item_id" id="ai" required></select><button type="button" class="btn plus" onclick="quick('items','ai')">＋</button><button type="button" class="btn scan" onclick="scan('ai')">▣</button></div></div><div><label class="req">اختلاف مقدار</label><div class="unit"><input name="difference_qty" type="number" step="any" required><span class="u" id="au">واحد</span></div></div><div><label class="req">تاریخ</label><input name="adjustment_date" type="date" required></div><div><label class="req">انبار</label><select name="warehouse_id" id="aw" required></select></div><div><label class="req">محل</label><select name="location_id" id="al" required></select></div><div class="f2"><label class="req">علت</label><textarea name="reason" required></textarea></div><div class="f4"><button class="btn warning">ثبت و اعمال تعدیل</button></div></form></div><div class="card"><h2>رزرو موجودی</h2><form class="form" onsubmit="createPost(event,'inventory_reservations','reserve')"><div class="f2"><label class="req">کالا</label><div class="row"><select name="item_id" id="resi" required></select><button type="button" class="btn plus" onclick="quick('items','resi')">＋</button><button type="button" class="btn scan" onclick="scan('resi')">▣</button></div></div><div><label class="req">مقدار</label><div class="unit"><input name="quantity" type="number" step="any" required><span class="u" id="resu">واحد</span></div></div><div><label class="req">تاریخ</label><input name="reservation_date" type="date" required></div><div><label class="req">انبار</label><select name="warehouse_id" id="resw" required></select></div><div><label class="req">محل</label><select name="location_id" id="resl" required></select></div><div><label>مرجع</label><input name="reference_id" type="number"></div><div><label>نوع مرجع</label><input name="reference_type"></div><div class="f4"><button class="btn success">ثبت و اعمال رزرو</button></div></form></div></div><div class="card" style="margin-top:14px"><div class="head"><h2>کاردکس کالا</h2></div><form class="row" onsubmit="event.preventDefault();kardex()"><select id="ki" style="max-width:330px"></select><button type="button" class="btn plus" onclick="quick('items','ki')">＋</button><button type="button" class="btn scan" onclick="scan('ki')">▣</button><select id="kw" style="max-width:220px"></select><input id="kf" type="date"><input id="kt" type="date"><button class="btn primary">نمایش</button><button type="button" class="btn" onclick="excel('kTable','کاردکس')">Excel</button><button type="button" class="btn" onclick="printReport('kTable','کاردکس کالا')">چاپ</button></form><div id="kTable"></div></div></div>
+
+                <div id="v-production" class="view"><div class="head"><h2>تولید و درخواست مواد</h2></div><div class="grid g2"><div class="card"><h2>درخواست مواد</h2><form class="form" onsubmit="save(event,'material_requests')"><div><label class="req">شماره درخواست</label><input name="request_no" required></div><div><label class="req">تاریخ</label><input name="request_date" type="date" required></div><div><label>سفارش تولید</label><select name="production_order_id" id="mrp"></select></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="requested">درخواست‌شده</option></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn primary">ثبت درخواست مواد</button></div></form></div><div class="card"><h2>تحویل مواد به تولید</h2><form class="form" onsubmit="save(event,'material_issues')"><div><label class="req">شماره حواله</label><input name="issue_no" required></div><div><label class="req">تاریخ</label><input name="issue_date" type="date" required></div><div><label>درخواست مواد</label><select name="material_request_id" id="mir"></select></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="issued">تحویل‌شده</option></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn primary">ثبت تحویل</button></div></form></div></div><div class="card" style="margin-top:14px"><h2>ورود محصول تولیدشده</h2><form class="form" onsubmit="createPost(event,'production_outputs','production')"><div><label class="req">شماره خروجی</label><input name="output_no" required></div><div><label class="req">محصول</label><div class="row"><select name="product_item_id" id="poi" required></select><button type="button" class="btn plus" onclick="quick('items','poi')">＋</button><button type="button" class="btn scan" onclick="scan('poi')">▣</button></div></div><div><label class="req">مقدار</label><div class="unit"><input name="quantity" type="number" step="any" required><span class="u" id="pou">واحد</span></div></div><div><label class="req">تاریخ</label><input name="output_date" type="date" required></div><div><label>انبار تولید</label><select name="warehouse_id" id="pow"></select></div><div><label>محل تولید</label><select name="location_id" id="pol"></select></div><div><label>سفارش تولید</label><select name="production_order_id" id="pop"></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn success">ثبت و ورود محصول</button></div></form></div></div>
+
+                <div id="v-subcontract" class="view"><div class="head"><h2>چاپخانه و پیمانکاری</h2><p>ارسال مواد به پیمانکار و دریافت کالای تغییرماهیت‌یافته.</p></div><div class="grid g3"><div class="card"><h3>سفارش پیمانکاری</h3><form class="form" onsubmit="save(event,'subcontract_orders')"><div><label class="req">شماره سفارش</label><input name="order_no" required></div><div><label class="req">تاریخ</label><input name="order_date" type="date" required></div><div class="f2"><label class="req">پیمانکار</label><div class="row"><select name="party_id" id="scp" required></select><button type="button" class="btn plus" onclick="quick('parties','scp')">＋</button></div></div><div><label>نوع فرایند</label><input name="process_type" value="چاپ پارچه"></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="open">باز</option></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn primary">ثبت سفارش</button></div></form></div><div class="card"><h3>ارسال به چاپخانه</h3><form class="form" onsubmit="save(event,'subcontract_dispatches')"><div><label class="req">شماره ارسال</label><input name="dispatch_no" required></div><div><label class="req">تاریخ</label><input name="dispatch_date" type="date" required></div><div class="f2"><label>سفارش</label><select name="subcontract_order_id" id="sdo"></select></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="sent">ارسال‌شده</option></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn primary">ثبت ارسال</button></div></form></div><div class="card"><h3>دریافت از چاپخانه</h3><form class="form" onsubmit="save(event,'subcontract_receipts')"><div><label class="req">شماره دریافت</label><input name="receipt_no" required></div><div><label class="req">تاریخ</label><input name="receipt_date" type="date" required></div><div class="f2"><label>سفارش</label><select name="subcontract_order_id" id="sro"></select></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="received">دریافت‌شده</option></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn success">ثبت دریافت</button></div></form></div></div></div>
+
+                <div id="v-returns" class="view"><div class="head"><h2>عودت و کنترل کیفیت</h2></div><div class="grid g2"><div class="card"><h3>کنترل کیفیت</h3><form class="form" onsubmit="save(event,'quality_inspections')"><div><label>رسید</label><select name="goods_receipt_id" id="qir"></select></div><div><label>تاریخ</label><input name="inspection_date" type="date"></div><div><label class="req">نتیجه</label><select name="result"><option value="accepted">تایید</option><option value="rejected">رد</option><option value="conditional">مشروط</option></select></div><div><label>وضعیت</label><input name="status" value="completed"></div><div class="f4"><label>یادداشت</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn primary">ثبت کنترل</button></div></form></div><div class="card"><h3>عودت به تامین‌کننده</h3><form class="form" onsubmit="save(event,'supplier_returns')"><div><label class="req">شماره عودت</label><input name="return_no" required></div><div><label class="req">تاریخ</label><input name="return_date" type="date" required></div><div><label>تامین‌کننده</label><select name="party_id" id="retp"></select></div><div><label>مرحله</label><select name="return_stage"><option value="temporary">قبل از رسید دائم</option><option value="permanent">بعد از رسید دائم</option></select></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="posted">ثبت‌شده</option></select></div><div class="f2"><label class="req">علت</label><textarea name="reason" required></textarea></div><div class="f4"><button class="btn danger">ثبت عودت</button></div></form></div></div></div>
+
+                <div id="v-masters" class="view"><div class="head"><h2>اطلاعات پایه</h2></div><div class="grid g3"><div class="card"><h3>کالا</h3><form class="form" onsubmit="save(event,'items')"><div><label class="req">SKU</label><input name="sku" required></div><div><label>بارکد</label><div class="row"><input name="barcode" id="mb"><button type="button" class="btn scan" onclick="scan('mb')">▣</button></div></div><div class="f2"><label class="req">نام کالا</label><input name="name" required></div><div><label class="req">واحد</label><div class="row"><select name="unit_id" id="mu" required></select><button type="button" class="btn plus" onclick="quick('units','mu')">＋</button></div></div><div><label>گروه</label><div class="row"><select name="category_id" id="mc"></select><button type="button" class="btn plus" onclick="quick('item_categories','mc')">＋</button></div></div><div><label>نوع</label><select name="item_type"><option value="raw_material">مواد اولیه</option><option value="semi_finished">نیمه‌ساخته</option><option value="finished_product">محصول نهایی</option><option value="consumable">مصرفی</option></select></div><div><label>فعال</label><select name="is_active"><option value="1">بله</option><option value="0">خیر</option></select></div><div class="f4"><label>شرح</label><textarea name="description"></textarea></div><div class="f4"><button class="btn primary">ثبت کالا</button></div></form></div><div class="card"><h3>انبار و محل</h3><form class="form" onsubmit="save(event,'warehouses')"><div><label class="req">کد انبار</label><input name="code" required></div><div class="f2"><label class="req">نام انبار</label><input name="name" required></div><div><label>نوع</label><input name="warehouse_type"></div><div><label>فعال</label><select name="is_active"><option value="1">بله</option><option value="0">خیر</option></select></div><div class="f4"><button class="btn primary">ثبت انبار</button></div></form><hr><form class="form" onsubmit="save(event,'warehouse_locations')"><div><label class="req">کد محل</label><input name="code" required></div><div><label class="req">نام محل</label><input name="name" required></div><div><label class="req">انبار</label><select name="warehouse_id" id="mw" required></select></div><div><label>فعال</label><select name="is_active"><option value="1">بله</option><option value="0">خیر</option></select></div><div class="f4"><button class="btn success">ثبت محل</button></div></form></div><div class="card"><h3>طرف حساب</h3><form class="form" onsubmit="save(event,'parties')"><div><label class="req">کد</label><input name="code" required></div><div class="f2"><label class="req">نام</label><input name="name" required></div><div><label>نوع</label><select name="party_type"><option value="supplier">تامین‌کننده</option><option value="customer">مشتری</option><option value="contractor">همکار تولید</option><option value="employee">پرسنل</option><option value="other">سایر</option></select></div><div><label>شناسه ملی</label><input name="national_id"></div><div><label>تلفن</label><input name="phone"></div><div><label>فعال</label><select name="is_active"><option value="1">بله</option><option value="0">خیر</option></select></div><div class="f4"><label>آدرس</label><textarea name="address"></textarea></div><div class="f4"><button class="btn primary">ثبت طرف حساب</button></div></form></div></div></div>
+
+                <div id="v-finance" class="view"><div class="head"><h2>حسابداری، پرداخت، چک و دفتر اشخاص</h2></div><div class="grid g2"><div class="card"><h3>پرداخت</h3><form class="form" onsubmit="save(event,'payments')"><div><label class="req">شماره پرداخت</label><input name="payment_no" required></div><div><label class="req">تاریخ</label><input name="payment_date" type="date" required></div><div><label class="req">مبلغ (ریال)</label><input name="amount" type="number" step="1" required></div><div><label>طرف حساب</label><select name="party_id" id="pp"></select></div><div><label>نوع</label><select name="payment_type"><option value="cash">نقدی</option><option value="bank">بانکی</option><option value="check">چک</option></select></div><div><label>وضعیت</label><select name="status"><option value="draft">پیش‌نویس</option><option value="posted">ثبت‌شده</option></select></div><div class="f4"><label>یادداشت</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn success">ثبت پرداخت</button></div></form></div><div class="card"><h3>چک</h3><form class="form" onsubmit="save(event,'checks')"><div><label class="req">شماره چک</label><input name="check_no" required></div><div><label>بانک</label><input name="bank_name"></div><div><label>مبلغ (ریال)</label><input name="amount" type="number"></div><div><label>سررسید</label><input name="due_date" type="date"></div><div><label>نوع</label><select name="check_type"><option value="received">دریافتی</option><option value="issued">پرداختی</option></select></div><div><label>طرف حساب</label><select name="party_id" id="cp"></select></div><div class="f4"><label>توضیحات</label><textarea name="notes"></textarea></div><div class="f4"><button class="btn warning">ثبت چک</button></div></form></div></div><div class="card" style="margin-top:14px"><div class="head"><h2>دفتر یک طرف حساب</h2></div><form class="row" onsubmit="event.preventDefault();ledger()"><select id="lp" style="max-width:350px"></select><input id="lf" type="date"><input id="lt" type="date"><button class="btn primary">نمایش دفتر</button><button type="button" class="btn" onclick="excel('ledger','دفتر')">Excel</button><button type="button" class="btn" onclick="printReport('ledger','دفتر طرف حساب')">چاپ</button></form><div class="kpis" id="ledgerKpi"></div><div id="ledger"></div></div></div>
+
+                <div id="v-generic" class="view"><div class="head"><div><h2>مدیریت همه جداول ERP</h2><p>CRUD کامل جدول‌های مجاز Worker؛ برای موارد تخصصی از فرم‌های عملیاتی استفاده کنید.</p></div></div><div class="card"><div class="row"><select id="gt" style="max-width:330px"></select><input id="gs" placeholder="جستجو"><button class="btn primary" onclick="genericLoad()">نمایش</button><button class="btn success" onclick="genericCreate($('#gt').val())">＋ ثبت</button></div><div id="genericGrid"></div></div></div>
+
+                <div id="v-reports" class="view"><div class="head"><h2>گزارش‌های جامع</h2></div><div class="card"><div class="row"><select id="rt"><option value="inventory">موجودی</option><option value="kardex">کاردکس</option><option value="purchases">خرید</option><option value="production">تولید</option><option value="subcontract">پیمانکاری</option><option value="checks">چک‌ها</option><option value="expenses">هزینه‌ها</option><option value="audit">سوابق تغییرات</option></select><button class="btn primary" onclick="report()">اجرای گزارش</button><button class="btn" onclick="excel('reportBox','گزارش')">Excel</button><button class="btn" onclick="printReport('reportBox','گزارش NINITO ERP')">چاپ / Crystal-style</button></div><div id="reportBox"></div></div><div class="card" style="margin-top:14px"><h3>مانده کلی بدهکاران و بستانکاران</h3><p class="mut">داشبورد Worker مجموع بدهکار و بستانکار را از نمای v_party_balances ارائه می‌کند. برای جزئیات یک شخص، دفتر طرف حساب را باز کنید.</p></div></div>
+
+                <div id="v-help" class="view"><div class="hero"><h1>راهنما و تنظیمات اتصال</h1><p>ترتیب کار پیشنهادی: اطلاعات پایه → دریافت موقت → کنترل/عودت → رسید دائم → موجودی → درخواست مواد → تحویل تولید → محصول → چاپخانه → حسابداری و گزارش.</p></div><div class="helpgrid" style="margin-top:14px"><div class="card"><h3>دریافت کالا</h3><p>کالای خریداری‌شده ابتدا رسید موقت می‌شود. انباردار اقلام و کیفیت را بررسی می‌کند و سپس رسید دائم را اعمال می‌کند تا موجودی رسمی ساخته شود.</p></div><div class="card"><h3>تولید</h3><p>تولید مواد را درخواست می‌کند؛ انباردار از فهرست کالا انتخاب کرده و تحویل را ثبت می‌کند. محصول نهایی در انبار تولید وارد می‌شود.</p></div><div class="card"><h3>چاپخانه</h3><p>پارچه/مواد به پیمانکار ارسال و هنگام برگشت دریافت می‌شود. تغییر ماهیت کالای چاپ‌شده با قلم کالایی مربوط ثبت می‌شود.</p></div></div><div class="card" style="margin-top:14px"><h3>اتصال Worker</h3><div class="form"><div class="f2"><label>API</label><input id="api" value="https://ninito1.farzadbabaei88.workers.dev"></div><div><label>X-User-Id</label><input id="uid" type="number"></div><div><label>X-API-Key در صورت فعال بودن Secret</label><input id="key" type="password"></div><div class="f4"><button class="btn primary" onclick="settings()">ذخیره و تست اتصال</button></div></div><p class="mut">خروجی چاپی این صفحه با قالب گزارش حرفه‌ای و مناسب Print/PDF ساخته می‌شود؛ فایل .rpt واقعی Crystal Reports نیازمند موتور Crystal در سمت سرور است و توسط مرورگر خالص تولید نمی‌شود.</p></div><div class="card" style="margin-top:14px"><h3>بارکدخوان</h3><p>دکمه ▣ کنار فیلدهای کالا دوربین گوشی/تبلت را فعال می‌کند. مرورگر باید BarcodeDetector و اجازه دوربین را پشتیبانی کند. در غیر این صورت SKU/بارکد را دستی وارد کنید.</p></div></div>
+            </section>
+        </main>
+    </div><div id="modal" style="display:none" title="ثبت اطلاعات"><div id="modalBody"></div></div><div id="scanModal" style="display:none" title="بارکدخوان"><div class="scanner"><video id="video" playsinline></video><p class="mut">بارکد را روبروی دوربین قرار دهید.</p><button class="btn danger" onclick="stopScan()">توقف دوربین</button></div></div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+        const DEF = 'https://ninito1.farzadbabaei88.workers.dev'; let API = localStorage.getItem('napi') || DEF, UID = localStorage.getItem('nuid') || '', KEY = localStorage.getItem('nkey') || '', L = {}, S = {}, stream = null, target = null;
+        const P = { 'Failed to fetch': 'ارتباط با Worker برقرار نشد؛ اینترنت، آدرس API و CORS را بررسی کنید.', 'Unauthorized': 'دسترسی غیرمجاز؛ API Key را بررسی کنید.', 'Internal Server Error': 'خطای داخلی سرور.', 'No writable fields supplied': 'فیلد قابل ثبت ارسال نشده است.' };
+        function toast(t, c = 'ok') { let x = $('#toast'); x.text(P[t] || t).css('border-right', '4px solid ' + (c === 'err' ? '#d84c5c' : c === 'warn' ? '#e3a219' : '#0e9b70')).fadeIn(150); setTimeout(() => x.fadeOut(250), 4000) } function load(on) { $('#loading').toggleClass('on', on) } function esc(x) { return $('<div>').text(x ?? '').html() } function fmt(x) { return x == null || x === '' ? '—' : typeof x === 'number' ? new Intl.NumberFormat('fa-IR').format(x) : esc(x) } function H() { let h = { 'Content-Type': 'application/json' }; if (UID) h['X-User-Id'] = UID; if (KEY) h['X-API-Key'] = KEY; return h }
+        async function api(path, opt = {}, retry = 1) { let c = new AbortController(), t = setTimeout(() => c.abort(), 12000); try { let r = await fetch(API.replace(/\/$/, '') + path, { ...opt, headers: { ...H(), ...(opt.headers || {}) }, signal: c.signal }), txt = await r.text(), d; try { d = JSON.parse(txt) } catch { d = { ok: false, error: txt } } if (!r.ok || d.ok === false) throw new Error(P[d.error] || d.error || ('HTTP ' + r.status)); return d.data } catch (e) { if (retry && (e.name === 'AbortError' || e.message === 'Failed to fetch')) return api(path, opt, 0); throw new Error(e.name === 'AbortError' ? 'زمان پاسخ سرور طولانی شد.' : (P[e.message] || e.message)) } finally { clearTimeout(t) } } async function safe(fn) { try { load(true); return await fn() } catch (e) { toast(e.message, 'err'); console.error(e) } finally { load(false) } }
+        function settings() { API = $('#api').val().trim() || DEF; UID = $('#uid').val().trim(); KEY = $('#key').val(); localStorage.setItem('napi', API); localStorage.setItem('nuid', UID); localStorage.setItem('nkey', KEY); check() } function check() { safe(async () => { let d = await api('/'); $('#status').text('متصل • ' + d.status); await refresh(); toast('اتصال به Worker برقرار است.') }) }
+        function openV(v) { $('.view').removeClass('active'); $('#v-' + v).addClass('active'); $('.nav button').removeClass('active'); $('.nav button[data-v=' + v + ']').addClass('active'); $('#title').text($('.nav button[data-v=' + v + ']').text().trim()); if (v === 'dashboard') dashboard(); if (v === 'receiving') loadRows('goods_receipts', 'receiptList'); if (v === 'generic') genericTables(); if (v === 'reports') report(); if (innerWidth < 700) $('#side').removeClass('open') }
+        $('.nav button').on('click', function () { openV($(this).data('v')) }); $('#menu').on('click', () => $('#side').toggleClass('open')); $('#refresh').on('click', check);
+        async function refresh() { L = await api('/api/lookups/all'); fill('ii', L.items, x => `${x.sku || ''} | ${x.name || ''} | ${x.barcode || ''}`);['ti', 'ai', 'resi', 'ki', 'poi'].forEach(id => fill(id, L.items, x => `${x.sku || ''} | ${x.name || ''}`));['rparty', 'scp', 'retp', 'pp', 'cp', 'lp'].forEach(id => fill(id, L.parties, x => `${x.code || ''} | ${x.name || ''}`));['rwh', 'iw', 'tfw', 'ttw', 'aw', 'resw', 'kw', 'pow', 'mw'].forEach(id => fill(id, L.warehouses, x => `${x.code || ''} | ${x.name || ''}`)); fill('mu', L.units, x => `${x.code || ''} | ${x.name || ''}`); fill('mc', L.categories, x => `${x.code || ''} | ${x.name || ''}`); fill('il', L.locations, x => `${x.warehouse_code || ''}/${x.code || ''} | ${x.name || ''}`);['tfl', 'ttl', 'al', 'resl', 'pol'].forEach(id => fill(id, L.locations, x => `${x.warehouse_code || ''}/${x.code || ''} | ${x.name || ''}`)); await dynamicTables() }
+        function fill(id, rows, lab) { let e = $('#' + id); if (!e.length) return; let old = e.val(); e.empty().append('<option value="">انتخاب کنید</option>'); (rows || []).forEach(r => e.append($('<option/>', { value: r.id, text: lab(r) }))); if (old && e.find(`option[value="${old}"]`).length) e.val(old) }
+        async function loc(sel, w) { let r = await api('/api/lookups/locations?warehouse_id=' + encodeURIComponent(w || '')); fill(sel, r, x => `${x.code || ''} | ${x.name || ''}`) } [['iw', 'il'], ['tfw', 'tfl'], ['ttw', 'ttl'], ['aw', 'al'], ['resw', 'resl'], ['pow', 'pol']].forEach(([a, b]) => $(document).on('change', '#' + a, () => loc(b, $('#' + a).val()).catch(e => toast(e.message, 'err'))));
+        function unit(item, out) { let x = (L.items || []).find(a => String(a.id) === String(item)), u = (L.units || []).find(a => String(a.id) === String(x?.unit_id)); $('#' + out).text(u?.name || u?.code || 'واحد') } [['ti', 'tu'], ['ai', 'au'], ['resi', 'resu'], ['poi', 'pou']].forEach(([a, b]) => $(document).on('change', '#' + a, function () { unit(this.value, b) }));
+        function body(form) { let b = Object.fromEntries(new FormData(form).entries()); for (let k in b) { if (b[k] === '') b[k] = null; else if (/_id$/.test(k)) b[k] = Number(b[k]); else if (/qty|quantity|amount|price|cost|debit|credit|difference/.test(k)) b[k] = Number(b[k]) } return b } async function save(e, table) { e.preventDefault(); await safe(async () => { await api('/api/' + table, { method: 'POST', body: JSON.stringify(body(e.target)) }); toast('اطلاعات با موفقیت ثبت شد.'); e.target.reset(); await refresh() }) } async function createPost(e, table, type) { e.preventDefault(); await safe(async () => { let d = await api('/api/' + table, { method: 'POST', body: JSON.stringify(body(e.target)) }); let m = { transfer: `/api/inventory/transfers/${d.id}/post`, adjust: `/api/inventory/adjustments/${d.id}/post`, reserve: `/api/inventory/reservations/${d.id}/post`, production: `/api/production-outputs/${d.id}/post` }; await api(m[type], { method: 'POST', body: '{}' }); toast('عملیات با موفقیت ثبت و در موجودی اعمال شد.'); e.target.reset(); await refresh(); inventory() }) }
+        async function loadRows(t, id) { await safe(async () => { let d = await api('/api/' + t + '?page_size=100'); render(d.rows || [], d.columns || guess(d.rows), id, t) }) } function guess(r) { return r[0] ? Object.keys(r[0]).map(name => ({ name })) : [] } function render(rows, cols, id, t) { if (!rows.length) { $('#' + id).html('<div style="padding:25px;text-align:center;color:#64748b">داده‌ای وجود ندارد.</div>'); return } cols = cols.slice(0, 15); let h = '<div class="table"><table><thead><tr>' + cols.map(c => `<th>${esc(c.name)}</th>`).join('') + (t ? '<th>عملیات</th>' : '') + '</tr></thead><tbody>'; rows.forEach(r => { h += '<tr>' + cols.map(c => `<td>${fmt(r[c.name])}</td>`).join('') + (t ? `<td><button class="btn" onclick="edit('${t}',${r.id})">ویرایش</button> <button class="btn danger" onclick="del('${t}',${r.id})">حذف</button>${wf(t, r)}</td>` : '') + '</tr>' }); $('#' + id).html(h + '</tbody></table></div>') } function wf(t, r) { if (t === 'goods_receipts' && r.receipt_stage === 'temporary' && r.status !== 'posted') return `<button class="btn success" onclick="post('/api/goods-receipts/${r.id}/permanent','رسید دائم')">رسید دائم</button>`; if (t === 'inventory_transfers' && r.status !== 'posted') return `<button class="btn success" onclick="post('/api/inventory/transfers/${r.id}/post','انتقال')">اعمال</button>`; if (t === 'inventory_adjustments' && r.status !== 'posted') return `<button class="btn warning" onclick="post('/api/inventory/adjustments/${r.id}/post','تعدیل')">اعمال</button>`; if (t === 'inventory_reservations' && r.status !== 'cancelled') return `<button class="btn success" onclick="post('/api/inventory/reservations/${r.id}/post','رزرو')">رزرو</button><button class="btn danger" onclick="post('/api/inventory/reservations/${r.id}/cancel','لغو')">لغو</button>`; if (t === 'production_outputs' && r.status !== 'posted') return `<button class="btn success" onclick="post('/api/production-outputs/${r.id}/post','محصول')">اعمال</button>`; return '' } async function post(p, n) { if (!confirm('عملیات ' + n + ' انجام شود؟')) return; await safe(async () => { await api(p, { method: 'POST', body: '{}' }); toast('عملیات ' + n + ' انجام شد.'); loadRows('goods_receipts', 'receiptList'); await refresh() }) } async function del(t, id) { if (!confirm('رکورد حذف شود؟')) return; await safe(async () => { await api('/api/' + t + '/' + id, { method: 'DELETE', body: '{}' }); toast('رکورد حذف شد.'); genericLoad() }) }
+        async function dashboard() { await safe(async () => { let d = await api('/api/dashboard'), i = d.inventory || {}; $('#onhand').text(fmt(i.on_hand)); $('#available').text(fmt(i.available)); $('#pending').text(fmt(d.pending_receipts?.count)); $('#parties').text(fmt(d.parties?.count)); $('#prod').text(fmt(d.production_orders?.count)); $('#sub').text(fmt(d.subcontract_orders?.count)); $('#checks').text(fmt(d.checks?.count)); $('#expenses').text(fmt(d.expenses?.amount)); render(d.recent_audit || [], guess(d.recent_audit || []), 'audit') }) }
+        async function inventory() { await safe(async () => { let q = new URLSearchParams(); if ($('#ii').val()) q.set('item_id', $('#ii').val()); if ($('#iw').val()) q.set('warehouse_id', $('#iw').val()); if ($('#il').val()) q.set('location_id', $('#il').val()); let d = await api('/api/reports/inventory?' + q); let s = d.summary || {}; $('#invKpi').html(`<div class="kpi">کل <b>${fmt(s.total_on_hand)}</b></div><div class="kpi">رزرو <b>${fmt(s.total_reserved)}</b></div><div class="kpi">قرنطینه <b>${fmt(s.total_quarantine)}</b></div><div class="kpi">در مسیر <b>${fmt(s.total_in_transit)}</b></div><div class="kpi">قابل استفاده <b>${fmt(s.total_available)}</b></div>`); render(d.rows || [], guess(d.rows || []), 'invTable') }) } async function kardex() { await safe(async () => { if (!$('#ki').val()) throw Error('کالا را انتخاب کنید.'); let q = new URLSearchParams({ item_id: $('#ki').val() }); if ($('#kw').val()) q.set('warehouse_id', $('#kw').val()); if ($('#kf').val()) q.set('from', $('#kf').val()); if ($('#kt').val()) q.set('to', $('#kt').val()); let d = await api('/api/reports/kardex?' + q); render(d.rows || [], guess(d.rows || []), 'kTable') }) } async function ledger() { await safe(async () => { if (!$('#lp').val()) throw Error('طرف حساب را انتخاب کنید.'); let q = new URLSearchParams(); if ($('#lf').val()) q.set('from', $('#lf').val()); if ($('#lt').val()) q.set('to', $('#lt').val()); let d = await api('/api/reports/party/' + $('#lp').val() + '/ledger?' + q); $('#ledgerKpi').html(`<div class="kpi">بدهکار <b>${fmt(d.summary?.debit)}</b> ریال</div><div class="kpi">بستانکار <b>${fmt(d.summary?.credit)}</b> ریال</div><div class="kpi">مانده <b>${fmt(d.summary?.balance)}</b> ریال</div>`); render(d.rows || [], guess(d.rows || []), 'ledger') }) }
+        async function report() { await safe(async () => { let t = $('#rt').val(), d = await api('/api/reports/' + t), rows = Array.isArray(d) ? d : (d.rows || []); render(rows, guess(rows), 'reportBox') }) }
+        async function genericTables() { let t = await api('/api/tables'); fill('gt', t.map(x => ({ id: x })), x => x.id) } async function genericLoad() { await safe(async () => { let t = $('#gt').val(); if (!t) return toast('ابتدا جدول را انتخاب کنید.', 'warn'); let q = $('#gs').val().trim(), d = await api('/api/' + t + '?page_size=100' + (q ? '&search=' + encodeURIComponent(q) : '')); render(d.rows || [], d.columns || guess(d.rows || []), 'genericGrid', t) }) }
+        function field(c) { let n = c.name, req = c.notnull && !['id', 'created_at', 'updated_at'].includes(n), l = n.replaceAll('_', ' '); if (n.endsWith('_id')) return `<div><label class="${req ? 'req' : ''}">${l}</label><input name="${n}" type="number" ${req ? 'required' : ''}></div>`; if (/date/.test(n)) return `<div><label>${l}</label><input name="${n}" type="date"></div>`; if (/qty|quantity|amount|price|cost|debit|credit|difference/.test(n)) return `<div><label>${l}</label><div class="unit"><input name="${n}" type="number" step="any"><span class="u">عدد/ریال</span></div></div>`; if (/notes|description|address|reason/.test(n)) return `<div class="f2"><label>${l}</label><textarea name="${n}"></textarea></div>`; return `<div><label class="${req ? 'req' : ''}">${l}</label><input name="${n}" ${req ? 'required' : ''}></div>` } async function genericCreate(t) { if (!t) return toast('جدول را انتخاب کنید.', 'warn'); await safe(async () => { if (!S[t]) S = await api('/api/schema'); let cs = S[t] || []; $('#modalBody').html(`<form id="gf" class="form">${cs.filter(c => !['id', 'created_at', 'updated_at'].includes(c.name)).map(field).join('')}<div class="f4"><button class="btn primary">ثبت</button></div></form>`); $('#modal').dialog({ modal: true, width: Math.min(950, innerWidth - 20) }); $('#gf').on('submit', async e => { e.preventDefault(); await api('/api/' + t, { method: 'POST', body: JSON.stringify(body(e.target)) }); toast('رکورد ثبت شد.'); $('#modal').dialog('close'); genericLoad() }) }) }
+        async function edit(t, id) { await safe(async () => { if (!S[t]) S = await api('/api/schema'); let r = await api('/api/' + t + '/' + id), cs = S[t] || []; $('#modalBody').html(`<form id="ef" class="form">${cs.filter(c => !['id', 'created_at', 'updated_at'].includes(c.name)).map(field).join('')}<div class="f4"><button class="btn primary">ذخیره</button></div></form>`); cs.forEach(c => { if ($('#ef [name=' + c.name + ']').length) $('#ef [name=' + c.name + ']').val(r[c.name] ?? '') }); $('#modal').dialog({ modal: true, width: Math.min(950, innerWidth - 20) }); $('#ef').on('submit', async e => { e.preventDefault(); await api('/api/' + t + '/' + id, { method: 'PUT', body: JSON.stringify(body(e.target)) }); toast('تغییرات ذخیره شد.'); $('#modal').dialog('close'); genericLoad() }) }) }
+        async function quick(t, targetId) { await genericCreate(t); $(document).one('dialogclose', () => refresh().then(() => { if (targetId) $('#' + targetId).trigger('change') })) }
+        async function excel(id, name) { let t = $('#' + id + ' table')[0]; if (!t) return toast('داده‌ای برای Excel وجود ندارد.', 'warn'); let wb = XLSX.utils.table_to_book(t, { sheet: name.slice(0, 31) }); XLSX.writeFile(wb, name + '-' + new Date().toISOString().slice(0, 10) + '.xlsx'); toast('فایل Excel آماده شد.') }
+        function printReport(id, title) { let h = $('#' + id).html(); if (!h) return toast('گزارش آماده چاپ نیست.', 'warn'); let w = open('', '_blank', 'width=1200,height=800'); if (!w) return toast('پنجره چاپ مسدود است.', 'warn'); w.document.write(`<html dir="rtl"><head><title>${title}</title><style>body{font-family:Tahoma;padding:25px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #bbb;padding:6px;font-size:10px}th{background:#eee}</style></head><body><h1>${title}</h1><p>گزارش NINITO ERP • ${new Date().toLocaleString('fa-IR')}</p>${h}<script>setTimeout(()=>print(),400)<\/script></body></html>`); w.document.close() }
+        async function scan(id) { target = id; if (!('BarcodeDetector' in window) || !navigator.mediaDevices?.getUserMedia) return toast('مرورگر فعلی بارکدخوان دوربین را پشتیبانی نمی‌کند؛ بارکد را دستی وارد کنید.', 'warn'); await safe(async () => { $('#scanModal').dialog({ modal: true, width: Math.min(600, innerWidth - 20) }); stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false }); let v = document.getElementById('video'); v.srcObject = stream; await v.play(); let d = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'code_128', 'code_39', 'upc_a', 'upc_e', 'itf', 'qr_code'] }); let loop = async () => { if (!stream) return; try { let a = await d.detect(v); if (a.length) { let x = a[0].rawValue; $('#' + target).val(x).trigger('change'); let rows = await api('/api/lookups/items?q=' + encodeURIComponent(x) + '&limit=10'); let f = rows.find(z => String(z.barcode) === String(x) || String(z.sku) === String(x)); if (f) { $('#' + target).val(f.id).trigger('change'); toast('کالا شناسایی شد: ' + f.name) } else toast('بارکد خوانده شد ولی کالا در دیتابیس پیدا نشد.', 'warn'); stopScan(); return } } catch (e) { } requestAnimationFrame(loop) }; loop() }) } function stopScan() { if (stream) { stream.getTracks().forEach(x => x.stop()); stream = null } try { $('#scanModal').dialog('close') } catch { } }
+        $(function () { $('#api').val(API); $('#uid').val(UID); $('#key').val(KEY); $('input[type=date]').each(function () { this.value = new Date().toISOString().slice(0, 10) }); check() })
+    </script>
+</body>
+</html>
