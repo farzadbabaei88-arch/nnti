@@ -6,7 +6,20 @@
 <title>Ninito | انبارداری</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.13.3/jquery-ui.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css">
 <style>
+.money-words{font-size:11px;color:#64748b;margin-top:5px;min-height:17px}
+.money-words strong{color:#0f766e}
+.dashboard-widgets{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:14px 0}
+.mini-widget{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:12px;display:flex;gap:9px;align-items:center;box-shadow:0 5px 18px rgba(15,23,42,.04)}
+.mini-icon{font-size:20px}.mini-widget small{display:block;color:#64748b;font-size:10px}.mini-widget strong{display:block;margin-top:4px;font-size:13px}
+.date-strip{display:flex;gap:18px;flex-wrap:wrap;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:10px 12px;font-size:11px;color:#475569}
+.news-box{margin-top:12px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:13px}
+.news-head{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}.news-head span{font-size:10px;color:#94a3b8}
+.news-item{padding:8px 0;border-bottom:1px solid #eef2f7}.news-item:last-child{border-bottom:0}.news-item a{color:#1e3a8a;text-decoration:none;font-size:11px}.news-item small{display:block;color:#94a3b8;margin-top:3px}
+@media(max-width:900px){.dashboard-widgets{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.dashboard-widgets{grid-template-columns:1fr 1fr}.date-strip{font-size:10px}}
+
 :root{--bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb;--dark:#111827;--green:#059669;--amber:#d97706;--red:#dc2626}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif}button,input,select,textarea{font:inherit}
 .app{min-height:100vh;display:flex;flex-direction:row-reverse}.side{width:285px;background:linear-gradient(180deg,#111827,#0b1220);color:white;padding:20px 15px;position:sticky;top:0;height:100vh;overflow:auto}.brand{display:flex;gap:11px;align-items:center;padding:5px 7px 20px;border-bottom:1px solid #334155}.logo{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;font-weight:900;font-size:20px;background:linear-gradient(135deg,#2563eb,#7c3aed)}.brand small{display:block;color:#94a3b8;margin-top:4px}.nav{margin-top:15px}.nav-label{font-size:10px;color:#64748b;margin:17px 9px 6px}.nav button{width:100%;border:0;background:transparent;color:#cbd5e1;text-align:right;border-radius:11px;padding:11px 12px;margin:3px 0;display:flex;gap:10px;align-items:center}.nav button:hover,.nav button.active{background:#263244;color:#fff}.ico{width:24px;text-align:center;font-size:17px}
@@ -47,15 +60,33 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery-ui-dist@1.13.3/jquery-ui.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-date@1.1.0/dist/persian-date.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
 <script>
 const DB={tables:{inventory:'inventory_items',tx:'inventory_transactions',adjust:'inventory_adjustments',reserve:'inventory_reservations',warehouse:'warehouses',location:'warehouse_locations',material:'materials',variant:'product_variants',product:'products'}};
 function guide(title,text,tip){return `<aside class="card guide"><h3>راهنمای ${title}</h3><p>${text}</p><div class="tip">💡 ${tip}</div><p><b>اتصال به دیتابیس:</b><br>شناسه‌ها و نام فیلدها عمداً با ستون‌های D1 هم‌راستا شده‌اند. UI نباید مستقیماً D1 را صدا بزند؛ مسیر درست UI → API/Worker → D1 است.</p></aside>`}
 function f(id,label,placeholder='',kind='text',table='',column=''){let c=kind==='select'?`<select id="${id}" name="${column||id}" data-table="${table}" data-column="${column||id}"><option value="">انتخاب کنید...</option></select>`:kind==='textarea'?`<textarea id="${id}" name="${column||id}" data-table="${table}" data-column="${column||id}" rows="3" placeholder="${placeholder}"></textarea>`:`<input id="${id}" name="${column||id}" data-table="${table}" data-column="${column||id}" placeholder="${placeholder}" autocomplete="off">`;let scan=kind==='scan'?`<button type="button" class="scan" data-target="${id}" title="اسکن Code 128">📷</button>`:'';return `<div class="field"><label for="${id}">${label}</label><div class="control">${c}${scan}</div></div>`}
 function datef(id,label){return `<div class="field date"><label for="${id}">${label}</label><input id="${id}" name="${id}" class="jalali-date" data-field="${id}" placeholder="انتخاب تاریخ"><button type="button" class="calendar" data-date-target="${id}">📅</button></div>`}
 const P={
-dashboard:{t:'داشبورد انبار',s:'نمای کلی وضعیت موجودی، رزرو و تراکنش‌ها',h:()=>`<div class="stats"><div class="stat"><small>اقلام موجود</small><strong id="stat-items">۰</strong></div><div class="stat"><small>رزرو شده</small><strong id="stat-reserved">۰</strong></div><div class="stat"><small>تراکنش‌ها</small><strong id="stat-tx">۰</strong></div><div class="stat"><small>هشدارها</small><strong id="stat-alert" style="color:var(--red)">۰</strong></div></div><div class="grid"><section class="card"><div class="head"><div><h2>مرکز کنترل انبار</h2><span class="sub">خلاصه‌ای که بعداً از API دریافت می‌شود</span></div></div><div class="empty">برای این محیط نمونه، داده واقعی D1 هنوز متصل نشده است.</div></section>${guide('داشبورد','داشبورد نقطه شروع مدیر انبار است و شاخص‌های مهم را یکجا نمایش می‌دهد.','اعداد باید از inventory_items، inventory_transactions و inventory_reservations محاسبه شوند.')}</div>`},
+dashboard:{t:'داشبورد انبار',s:'نمای کلی وضعیت موجودی، رزرو، تراکنش‌ها و شاخص‌های مدیریتی',h:()=>`<div class="stats"><div class="stat"><small>اقلام موجود</small><strong id="stat-items">۰</strong></div><div class="stat"><small>رزرو شده</small><strong id="stat-reserved">۰</strong></div><div class="stat"><small>تراکنش‌ها</small><strong id="stat-tx">۰</strong></div><div class="stat"><small>هشدارها</small><strong id="stat-alert" style="color:var(--red)">۰</strong></div></div><div class="grid"><section class="card"><div class="head"><div><h2>مرکز کنترل انبار</h2><span class="sub">خلاصه‌ای که بعداً از API دریافت می‌شود</span></div></div><div class="dashboard-widgets">
+  <div class="mini-widget" id="weatherWidget"><span class="mini-icon">☁️</span><div><small>آب‌وهوا</small><strong id="weatherValue">در حال دریافت...</strong></div></div>
+  <div class="mini-widget" id="goldWidget"><span class="mini-icon">🥇</span><div><small>طلای ۱۸ عیار</small><strong id="goldValue">در حال دریافت...</strong></div></div>
+  <div class="mini-widget" id="silverWidget"><span class="mini-icon">🥈</span><div><small>نقره</small><strong id="silverValue">در حال دریافت...</strong></div></div>
+  <div class="mini-widget" id="usdWidget"><span class="mini-icon">💵</span><div><small>دلار</small><strong id="usdValue">در حال دریافت...</strong></div></div>
+  <div class="mini-widget clock-widget"><span class="mini-icon">🕒</span><div><small>زمان سیستم</small><strong id="systemClock">--:--:--</strong></div></div>
+</div>
+<div class="date-strip">
+  <span>تاریخ شمسی: <b id="jalaliToday">---</b></span>
+  <span>تاریخ میلادی: <b id="gregorianToday">---</b></span>
+  <span>ساعت: <b id="dashboardClock">---</b></span>
+</div>
+<div class="news-box">
+  <div class="news-head"><strong>آخرین اخبار سیاسی جهان</strong><span id="newsUpdated">--</span></div>
+  <div id="politicalNews"><span class="empty">در حال دریافت اخبار...</span></div>
+</div>
+<div class="empty" id="dashboardConnectionState">در حال اتصال به Cloudflare Worker و D1...</div></section>${guide('داشبورد','داشبورد نقطه شروع مدیر انبار است و شاخص‌های مهم را یکجا نمایش می‌دهد.','اعداد باید از inventory_items، inventory_transactions و inventory_reservations محاسبه شوند.')}</div>`},
 inventory:{t:'موجودی کالا',s:'موجودی کل، رزروشده و قابل استفاده',h:()=>`<div class="grid"><section class="card"><div class="head"><div><h2>جستجوی موجودی</h2><span class="sub">inventory_items</span></div></div><div class="form">${f('inventory_variant_sku','SKU / بارکد','بارکد یا SKU','scan','product_variants','sku')}${f('inventory_warehouse_id','انبار','انتخاب انبار','select','inventory_items','warehouse_id')}${f('inventory_location_id','محل','انتخاب محل','select','inventory_items','location_id')}</div><div class="actions"><button class="btn primary" id="searchInventory">نمایش موجودی</button><button class="btn ghost" id="resetInventory">پاک کردن</button></div><div class="tablewrap"><table class="table"><thead><tr><th>SKU</th><th>کالا</th><th>انبار</th><th>محل</th><th>موجودی</th><th>رزرو</th><th>قابل استفاده</th></tr></thead><tbody id="inventoryRows"><tr><td colspan="7" class="empty">جستجو کنید.</td></tr></tbody></table></div></section>${guide('موجودی کالا','این فرم مقدار quantity و reserved_quantity را در inventory_items برای کالا، انبار و محل بررسی می‌کند.','قابل استفاده باید quantity منهای reserved_quantity باشد و کنترل نهایی در Worker انجام شود.')}</div>`},
-transactions:{t:'ورود و خروج کالا',s:'ثبت سابقه رسمی تغییرات موجودی',h:()=>`<div class="grid"><section class="card"><div class="head"><div><h2>ثبت تراکنش انبار</h2><span class="sub">inventory_transactions</span></div></div><div class="form">${f('inventory_transaction_type','نوع تراکنش','انتخاب عملیات','select','inventory_transactions','transaction_type')}${f('inventory_transaction_variant_id','SKU / بارکد','اسکن کالا','scan','inventory_transactions','variant_id')}${f('inventory_transaction_warehouse_id','انبار','انتخاب انبار','select','inventory_transactions','warehouse_id')}${f('inventory_transaction_location_id','محل','انتخاب محل','select','inventory_transactions','location_id')}${f('inventory_transaction_quantity','مقدار','مثلاً 10','text','inventory_transactions','quantity')}${f('inventory_transaction_unit_cost','بهای واحد','ریال','text','inventory_transactions','unit_cost')}${f('inventory_transaction_reference_type','نوع مرجع','sales_order / purchase_order','text','inventory_transactions','reference_type')}${f('inventory_transaction_reference_id','شناسه مرجع','مثلاً 1024','text','inventory_transactions','reference_id')}${datef('inventory_transaction_date','تاریخ تراکنش')}${f('inventory_transaction_notes','توضیحات','علت یا توضیحات','textarea','inventory_transactions','notes')}</div><div class="actions"><button class="btn primary" id="saveTx">ثبت تراکنش</button></div></section>${guide('ورود و خروج','هر تغییر موجودی باید سابقه داشته باشد؛ از خرید و فروش تا مصرف تولید، برگشت، نمونه و ضایعات.','ثبت تراکنش باید باعث تغییر inventory_items شود؛ این دو عملیات باید در Backend کنترل شوند.')}</div>`},
+transactions:{t:'ورود و خروج کالا',s:'ثبت سابقه رسمی تغییرات موجودی',h:()=>`<div class="grid"><section class="card"><div class="head"><div><h2>ثبت تراکنش انبار</h2><span class="sub">inventory_transactions</span></div></div><div class="form">${f('inventory_transaction_type','نوع تراکنش','انتخاب عملیات','select','inventory_transactions','transaction_type')}${f('inventory_transaction_variant_id','SKU / بارکد','اسکن کالا','scan','inventory_transactions','variant_id')}${f('inventory_transaction_warehouse_id','انبار','انتخاب انبار','select','inventory_transactions','warehouse_id')}${f('inventory_transaction_location_id','محل','انتخاب محل','select','inventory_transactions','location_id')}${f('inventory_transaction_quantity','مقدار','مثلاً 10','text','inventory_transactions','quantity')}${makeMoneyField('inventory_transaction_unit_cost','بهای واحد')}${f('inventory_transaction_reference_type','نوع مرجع','sales_order / purchase_order','text','inventory_transactions','reference_type')}${f('inventory_transaction_reference_id','شناسه مرجع','مثلاً 1024','text','inventory_transactions','reference_id')}${datef('inventory_transaction_date','تاریخ تراکنش')}${f('inventory_transaction_notes','توضیحات','علت یا توضیحات','textarea','inventory_transactions','notes')}</div><div class="actions"><button class="btn primary" id="saveTx">ثبت تراکنش</button></div></section>${guide('ورود و خروج','هر تغییر موجودی باید سابقه داشته باشد؛ از خرید و فروش تا مصرف تولید، برگشت، نمونه و ضایعات.','ثبت تراکنش باید باعث تغییر inventory_items شود؛ این دو عملیات باید در Backend کنترل شوند.')}</div>`},
 transfer:{t:'انتقال بین انبارها',s:'انتقال اتمیک کالا بین مبدا و مقصد',h:()=>`<div class="grid"><section class="card"><div class="head"><div><h2>فرم انتقال</h2><span class="sub">transfer_out + transfer_in</span></div></div><div class="form">${f('transfer_variant_id','SKU / بارکد','اسکن کالا','scan','inventory_transactions','variant_id')}${f('transfer_quantity','مقدار','تعداد','text','inventory_transactions','quantity')}${f('transfer_from_warehouse_id','انبار مبدا','انتخاب','select','inventory_transactions','warehouse_id')}${f('transfer_from_location_id','محل مبدا','انتخاب','select','inventory_transactions','location_id')}${f('transfer_to_warehouse_id','انبار مقصد','انتخاب','select','inventory_transactions','warehouse_id')}${f('transfer_to_location_id','محل مقصد','انتخاب','select','inventory_transactions','location_id')}${datef('transfer_date','تاریخ انتقال')}${f('transfer_notes','توضیحات','توضیحات انتقال','textarea','inventory_transactions','notes')}</div><div class="actions"><button class="btn primary" id="saveTransfer">ثبت انتقال</button></div></section>${guide('انتقال','کالا از محل مبدا خارج و به مقصد وارد می‌شود.','این عملیات باید اتمیک باشد؛ اگر یکی از دو طرف ثبت نشود، کل انتقال نباید نهایی شود.')}</div>`},
 adjustment:{t:'تعدیل موجودی',s:'ثبت اختلاف شمارش واقعی با سیستم',h:()=>`<div class="grid"><section class="card"><div class="head"><div><h2>تعدیل موجودی</h2><span class="sub">inventory_adjustments</span></div></div><div class="form">${f('inventory_adjustment_variant_id','SKU / بارکد','اسکن کالا','scan','inventory_adjustments','variant_id')}${f('inventory_adjustment_warehouse_id','انبار','انتخاب','select','inventory_adjustments','warehouse_id')}${f('inventory_adjustment_old_quantity','موجودی سیستم','مقدار فعلی','text','inventory_adjustments','old_quantity')}${f('inventory_adjustment_new_quantity','موجودی واقعی','نتیجه شمارش','text','inventory_adjustments','new_quantity')}${datef('inventory_adjustment_date','تاریخ تعدیل')}${f('inventory_adjustment_reason','علت تعدیل','مثلاً کسری شمارش','textarea','inventory_adjustments','reason')}</div><div class="actions"><button class="btn primary" id="saveAdjust">ثبت تعدیل</button></div></section>${guide('تعدیل','برای اختلاف بین موجودی ثبت‌شده و شمارش فیزیکی استفاده می‌شود.','difference_quantity بهتر است توسط Backend از new_quantity − old_quantity محاسبه شود، نه از ورودی کاربر.')}</div>`},
 reservations:{t:'رزرو موجودی',s:'رزرو بخشی از موجودی برای سفارش یا مرجع',h:()=>`<div class="grid"><section class="card"><div class="head"><div><h2>ثبت رزرو</h2><span class="sub">inventory_reservations</span></div></div><div class="form">${f('inventory_reservation_variant_id','SKU / بارکد','اسکن کالا','scan','inventory_reservations','variant_id')}${f('inventory_reservation_warehouse_id','انبار','انتخاب','select','inventory_reservations','warehouse_id')}${f('inventory_reservation_location_id','محل','انتخاب','select','inventory_reservations','location_id')}${f('inventory_reservation_quantity','مقدار','مثلاً 3','text','inventory_reservations','quantity')}${f('inventory_reservation_reference_type','نوع مرجع','sales_order','text','inventory_reservations','reference_type')}${f('inventory_reservation_reference_id','شناسه مرجع','مثلاً 1024','text','inventory_reservations','reference_id')}${datef('inventory_reservation_expires_at','تاریخ انقضا')}</div><div class="actions"><button class="btn primary" id="saveReserve">ثبت رزرو</button></div></section>${guide('رزرو','رزرو کالا را از انبار خارج نمی‌کند؛ فقط بخشی از موجودی را برای یک مرجع نگه می‌دارد.','quantity ثابت می‌ماند اما reserved_quantity افزایش می‌یابد و موجودی قابل استفاده کم می‌شود.')}</div>`},
@@ -65,9 +96,44 @@ kardex:{t:'کاردکس کالا',s:'تاریخچه کامل حرکت یک قل�
 alerts:{t:'هشدارهای موجودی',s:'شناسایی کمبود و نیاز به سفارش',h:()=>`<div class="grid"><section class="card"><div class="head"><div><h2>کنترل حداقل موجودی</h2><span class="sub">materials.minimum_stock / reorder_point</span></div></div><div class="tablewrap"><table class="table"><thead><tr><th>کد</th><th>ماده</th><th>موجودی</th><th>حداقل</th><th>نقطه سفارش</th><th>وضعیت</th></tr></thead><tbody><tr><td colspan="6" class="empty">هشدارهای واقعی پس از اتصال API نمایش داده می‌شوند.</td></tr></tbody></table></div></section>${guide('هشدار','وقتی موجودی به حداقل یا نقطه سفارش برسد، مدیر باید قبل از توقف عملیات اقدام کند.','منطق هشدار باید متمرکز باشد و از داده واقعی D1 تغذیه شود؛ UI فقط نتیجه را نمایش دهد.')}</div>`}
 };
 let stream=null,target=null;
-function initDates(){if(!window.jQuery)return;$('.jalali-date').each(function(){$(this).datepicker({dateFormat:'yy/mm/dd',changeMonth:true,changeYear:true,showButtonPanel:true});});}
-function page(k){let p=P[k]||P.dashboard;$('#title').text(p.t);$('#subtitle').text(p.s);$('#content').html(p.h());$('#nav button').removeClass('active');$(`#nav button[data-page="${k}"]`).addClass('active');$('#sidebar').removeClass('open');initDates();$('.scan').on('click',function(){target=$(this).data('target');$('#scanner').addClass('show')});wire(k)}
-function wire(k){$('#saveTx,#saveTransfer,#saveAdjust,#saveReserve').on('click',()=>toast('فرم آماده ارسال به API است. عملیات نهایی باید در Cloudflare Worker و D1 تراکنشی شود.'));$('[data-date-target]').on('click',function(){$('#'+$(this).data('date-target')).datepicker('show')});$('#resetInventory').on('click',()=>{$('#inventoryRows').html('<tr><td colspan="7" class="empty">فیلتر پاک شد.</td></tr>')})}
+function initDates(){
+      if(!window.jQuery)return;
+      $('.jalali-date').each(function(){
+        const $el=$(this);
+        if($.fn.pDatepicker){
+          $el.pDatepicker({
+            format:'YYYY/MM/DD',
+            initialValue:false,
+            autoClose:true,
+            calendar:{persian:{locale:'fa',leapYearMode:'algorithmic'},gregorian:{locale:'en'}},
+            toolbox:{calendarSwitch:{enabled:false}}
+          });
+        }else{
+          $el.datepicker({dateFormat:'yy/mm/dd',changeMonth:true,changeYear:true});
+        }
+      });
+    }
+function page(k){let p=P[k]||P.dashboard;$('#title').text(p.t);$('#subtitle').text(p.s);$('#content').html(p.h());$('#nav button').removeClass('active');$(`#nav button[data-page="${k}"]`).addClass('active');$('#sidebar').removeClass('open');initDates();attachMoneyWords();$('.scan').on('click',function(){target=$(this).data('target');$('#scanner').addClass('show')});wire(k)}
+function wire(k){
+      $('#saveTx').off('click').on('click', async ()=>{
+        try{
+          const body={
+            warehouse_id:Number($('#inventory_transaction_warehouse_id').val()),
+            location_id:$('#inventory_transaction_location_id').val()?Number($('#inventory_transaction_location_id').val()):null,
+            variant_id:$('#inventory_transaction_variant_id').val()?Number($('#inventory_transaction_variant_id').val()):null,
+            transaction_type:$('#inventory_transaction_type').val(),
+            quantity:Number($('#inventory_transaction_quantity').val()),
+            unit_cost:Number(($('#inventory_transaction_unit_cost').val()||'').replace(/\D/g,''))||0,
+            reference_type:$('#inventory_transaction_reference_type').val()||null,
+            reference_id:$('#inventory_transaction_reference_id').val()?Number($('#inventory_transaction_reference_id').val()):null,
+            transaction_date:$('#inventory_transaction_date').val()||null,
+            notes:$('#inventory_transaction_notes').val()||null
+          };
+          await NINITO_API.post('/api/inventory/transactions',body); toast('تراکنش با موفقیت ثبت شد.'); 
+        }catch(e){toast(e.message)}
+      });
+      $('#saveTransfer,#saveAdjust,#saveReserve').on('click',()=>toast('فرم آماده اتصال کامل به API است؛ عملیات نهایی در Worker به‌صورت تراکنشی انجام می‌شود.'));
+      $('[data-date-target]').on('click',function(){$('#'+$(this).data('date-target')).datepicker('show')});$('#resetInventory').on('click',()=>{$('#inventoryRows').html('<tr><td colspan="7" class="empty">فیلتر پاک شد.</td></tr>')})}
 function toast(s){$('#toast').text(s).fadeIn(150);clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('#toast').fadeOut(200),3200)}
 $('#nav').on('click','button[data-page]',function(){page($(this).data('page'))});$('#mobileBtn').on('click',()=>$('#sidebar').toggleClass('open'));$('#close').on('click',()=>{stop();$('#scanner').removeClass('show')});$('#stop').on('click',stop);
 async function start(){try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});$('#video')[0].srcObject=stream;await $('#video')[0].play();toast('دوربین فعال شد. در مرورگرهای دارای BarcodeDetector تلاش برای خواندن Code 128 انجام می‌شود.');scanLoop()}catch(e){toast('دسترسی دوربین برقرار نشد؛ سایت باید روی HTTPS اجرا شود و اجازه Camera داده شود.')}}
@@ -75,5 +141,100 @@ function stop(){if(stream){stream.getTracks().forEach(t=>t.stop());stream=null}$
 async function scanLoop(){if(!stream||!target)return;const v=$('#video')[0];if('BarcodeDetector' in window){try{const detector=new BarcodeDetector({formats:['code_128']});const codes=await detector.detect(v);if(codes.length){$('#'+target).val(codes[0].rawValue).trigger('change');stop();$('#scanner').removeClass('show');toast('بارکد با موفقیت خوانده شد.');return}}catch(e){}}requestAnimationFrame(scanLoop)}
 $('#start').on('click',start);page('dashboard');
 </script>
+
+<script>
+const NINITO_API_BASE = "https://ninito.farzadbabaei88.workers.dev";
+const NINITO_API = {
+  async request(path, options = {}) {
+    const res = await fetch(NINITO_API_BASE + path, {
+      ...options,
+      headers: {"Content-Type":"application/json", ...(options.headers||{})}
+    });
+    const data = await res.json().catch(()=>({ok:false,error:"پاسخ JSON نامعتبر بود"}));
+    if (!res.ok || data.ok === false) throw new Error(data.error || "خطا در ارتباط با سرور");
+    return data;
+  },
+  get(path){ return this.request(path); },
+  post(path, body){ return this.request(path,{method:"POST",body:JSON.stringify(body)}); }
+};
+
+const persianNumber = n => String(n).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const formatMoney = n => new Intl.NumberFormat("fa-IR").format(Number(n||0));
+
+const ones = ["","یک","دو","سه","چهار","پنج","شش","هفت","هشت","نه"];
+const teens = ["ده","یازده","دوازده","سیزده","چهارده","پانزده","شانزده","هفده","هجده","نوزده"];
+const tens = ["","","بیست","سی","چهل","پنجاه","شصت","هفتاد","هشتاد","نود"];
+const hundreds = ["","صد","دویست","سیصد","چهارصد","پانصد","ششصد","هفتصد","هشتصد","نهصد"];
+const scales = ["","هزار","میلیون","میلیارد","تریلیون","کوادریلیون"];
+function persianNumberToWords(num){
+  num = Math.floor(Number(num));
+  if (!Number.isFinite(num)) return "";
+  if (num === 0) return "صفر";
+  if (num < 0) return "منفی " + persianNumberToWords(-num);
+  function tri(n){
+    const p=[];
+    const h=Math.floor(n/100), r=n%100;
+    if(h) p.push(hundreds[h]);
+    if(r>=10 && r<=19) p.push(teens[r-10]);
+    else {
+      if(Math.floor(r/10)) p.push(tens[Math.floor(r/10)]);
+      if(r%10) p.push(ones[r%10]);
+    }
+    return p.join(" و ");
+  }
+  const parts=[];
+  let i=0;
+  while(num>0){
+    const chunk=num%1000;
+    if(chunk) parts.unshift(tri(chunk)+(scales[i] ? " "+scales[i] : ""));
+    num=Math.floor(num/1000); i++;
+  }
+  return parts.join(" و ");
+}
+function attachMoneyWords(root=document){
+  root.querySelectorAll('input[data-money="1"], input.money-input').forEach(input=>{
+    let out=input.parentElement.querySelector(".money-words");
+    if(!out){ out=document.createElement("div"); out.className="money-words"; input.parentElement.appendChild(out); }
+    const update=()=>{
+      const raw=(input.value||"").replace(/[^\d]/g,"");
+      out.innerHTML=raw ? "به حروف: <strong>"+persianNumberToWords(raw)+" ریال</strong>" : "";
+    };
+    input.addEventListener("input",update); update();
+  });
+}
+function makeMoneyField(id,label,placeholder="مبلغ به ریال"){
+  return `<div class="field"><label for="${id}">${label}</label><div class="control"><input id="${id}" name="${id}" class="money-input" data-money="1" inputmode="numeric" placeholder="${placeholder}"><button type="button" class="scan" data-target="${id}">▣</button></div><div class="money-words"></div></div>`;
+}
+function updateDashboardClock(){
+  const now=new Date();
+  const fa=new Intl.DateTimeFormat("fa-IR-u-ca-persian",{year:"numeric",month:"2-digit",day:"2-digit"}).format(now);
+  const gr=new Intl.DateTimeFormat("en-CA",{year:"numeric",month:"2-digit",day:"2-digit"}).format(now);
+  const time=new Intl.DateTimeFormat("fa-IR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(now);
+  document.querySelector("#jalaliToday")?.replaceChildren(document.createTextNode(fa));
+  document.querySelector("#gregorianToday")?.replaceChildren(document.createTextNode(gr));
+  document.querySelector("#dashboardClock")?.replaceChildren(document.createTextNode(time));
+  document.querySelector("#systemClock")?.replaceChildren(document.createTextNode(time));
+}
+async function loadDashboardExtras(){
+  try{
+    const d=await NINITO_API.get("/api/dashboard/external");
+    if(d.weather) document.querySelector("#weatherValue")?.replaceChildren(document.createTextNode(`${d.weather.temp}° | ${d.weather.description}`));
+    if(d.market?.gold) document.querySelector("#goldValue")?.replaceChildren(document.createTextNode(formatMoney(d.market.gold)+" ریال"));
+    if(d.market?.silver) document.querySelector("#silverValue")?.replaceChildren(document.createTextNode(formatMoney(d.market.silver)+" ریال"));
+    if(d.market?.usd) document.querySelector("#usdValue")?.replaceChildren(document.createTextNode(formatMoney(d.market.usd)+" ریال"));
+    const box=document.querySelector("#politicalNews");
+    if(box && Array.isArray(d.news)){
+      box.innerHTML=d.news.slice(0,3).map(x=>`<div class="news-item"><a href="${x.url||'#'}" target="_blank" rel="noopener">${x.title}</a><small>${x.source||"خبر"} — ${x.published||""}</small></div>`).join("") || '<span class="empty">خبری دریافت نشد.</span>';
+      document.querySelector("#newsUpdated")?.replaceChildren(document.createTextNode(d.updated_at||""));
+    }
+    document.querySelector("#dashboardConnectionState")?.replaceChildren(document.createTextNode("اتصال به Cloudflare Worker برقرار است؛ داده‌های اصلی از D1 و کارت‌های بیرونی از APIهای تنظیم‌شده دریافت می‌شوند."));
+  }catch(e){
+    document.querySelector("#dashboardConnectionState")?.replaceChildren(document.createTextNode("اتصال API برقرار نشد: "+e.message));
+  }
+}
+setInterval(updateDashboardClock,1000);
+document.addEventListener("DOMContentLoaded",()=>{updateDashboardClock();loadDashboardExtras();attachMoneyWords();});
+</script>
+
 </body>
 </html>
