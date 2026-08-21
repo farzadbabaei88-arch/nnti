@@ -3,13 +3,10 @@ main = "workers.js"
 compatibility_date = "2026-08-21"
 
 [assets]
-directory = "."
+directory = "./public"
+run_worker_first = ["/api/*"]
 
 [[d1_databases]]
 binding = "DB"
 database_name = "ninitodb"
 database_id = "dfaaabcc-99b4-4e00-8870-b8e2f45de625"
-
-# Optional:
-# [triggers]
-# crons = ["*/30 * * * *"]
