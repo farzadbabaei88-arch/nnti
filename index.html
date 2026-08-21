@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>NINITO | تولید و انبار</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Tahoma,Arial,sans-serif;background:#f5f6f8;color:#17202a}body{overflow-x:hidden}
+:root{--ink:#17202a;--muted:#667085;--line:#e5e7eb;--paper:#fff;--soft:#f8fafc;--accent:#111827;--danger:#b42318;--ok:#027a48}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.side{background:#111827;color:#fff;padding:22px 16px;position:sticky;top:0;height:100vh}.brand{font-size:24px;font-weight:900;margin-bottom:26px}.brand small{display:block;font-size:11px;color:#9ca3af;margin-top:4px}.nav button{width:100%;border:0;background:transparent;color:#d1d5db;text-align:right;padding:12px 13px;border-radius:10px;margin:2px 0;cursor:pointer;font:inherit}.nav button:hover,.nav button.active{background:#374151;color:#fff}
+main{padding:22px;min-width:0}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:15px}.top h1{font-size:22px;margin:0}.status{font-size:12px;color:var(--muted);background:#fff;border:1px solid var(--line);padding:8px 12px;border-radius:999px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:17px;box-shadow:0 2px 8px #00000008}.metric .n{font-size:30px;font-weight:900;margin:6px 0}.metric .l{color:var(--muted);font-size:13px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:15px;margin-top:16px;padding:18px}.panel h2{font-size:16px;margin:0 0 14px}.formgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:10px;background:#fff;font:inherit;outline:none}.field textarea{min-height:80px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:9px;padding:10px 15px;background:#111827;color:#fff;cursor:pointer;font:inherit}.btn.light{background:#f2f4f7;color:#344054}.btn.danger{background:#b42318}.btn.ok{background:#027a48}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}th{color:#667085;background:#fafafa}.badge{display:inline-block;border-radius:999px;padding:4px 8px;background:#f2f4f7;font-size:11px}.badge.ok{background:#ecfdf3;color:#027a48}.badge.bad{background:#fef3f2;color:#b42318}
+.hidden{display:none!important}.empty{padding:30px;text-align:center;color:#98a2b3}.toast{position:fixed;left:20px;bottom:20px;background:#111827;color:#fff;padding:12px 16px;border-radius:10px;z-index:20;display:none;max-width:360px}
+.bomrow{display:grid;grid-template-columns:1fr 140px 90px;gap:8px;margin-bottom:8px}.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.app{grid-template-columns:76px 1fr}.side{padding:16px 8px}.brand{text-align:center;font-size:16px}.brand small{display:none}.nav button{font-size:0;text-align:center}.nav button:before{content:'●';font-size:15px}.nav button.active:before{content:'◆'}}
+@media(max-width:700px){.app{display:block}.side{height:auto;position:sticky;top:0;z-index:10;padding:8px;display:flex;align-items:center;gap:8px}.brand{margin:0 10px}.nav{display:flex;overflow:auto;gap:3px;flex:1}.nav button{min-width:48px}.grid{grid-template-columns:1fr 1fr}.formgrid{grid-template-columns:1fr}.bomrow{grid-template-columns:1fr 90px}.bomrow button{grid-column:1/-1}.top{align-items:flex-start;flex-direction:column}main{padding:12px}.panel{padding:12px;overflow:auto}.tablewrap{overflow:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand">NINITO<small>سیستم یکپارچه تولید و انبار</small></div>
+  <nav class="nav">
+    <button class="active" data-page="dashboard">داشبورد</button>
+    <button data-page="items">کالا و مواد</button>
+    <button data-page="bom">BOM</button>
+    <button data-page="stock">انبار</button>
+    <button data-page="production">برنامه تولید</button>
+  </nav>
+</aside>
+<main>
+  <div class="top"><h1 id="title">داشبورد</h1><div class="status">بدون نیاز به ورود کاربر</div></div>
+
+  <section id="dashboard" class="page">
+    <div class="grid">
+      <div class="card metric"><div class="l">کل اقلام</div><div class="n" id="mItems">۰</div></div>
+      <div class="card metric"><div class="l">محصولات</div><div class="n" id="mProducts">۰</div></div>
+      <div class="card metric"><div class="l">مواد اولیه</div><div class="n" id="mMaterials">۰</div></div>
+      <div class="card metric"><div class="l">برنامه امروز</div><div class="n" id="mOrders">۰</div></div>
+    </div>
+    <div class="panel"><h2>منطق سیستم</h2><p>برنامه تولید ← BOM ← کنترل موجودی ← Alternative در صورت نیاز ← ثبت تولید ← کسر خودکار مواد از انبار.</p></div>
+  </section>
+
+  <section id="items" class="page hidden">
+    <div class="panel">
+      <div class="section-title"><h2>ثبت کالا / ماده اولیه</h2><button class="btn light" onclick="loadItems()">بازخوانی</button></div>
+      <div class="formgrid">
+        <div class="field"><label>شرح کالا</label><input id="itemName" placeholder="مثلاً مخمل صورتی"></div>
+        <div class="field"><label>نوع</label><select id="itemType"><option value="MATERIAL">ماده اولیه</option><option value="PRODUCT">محصول</option></select></div>
+        <div class="field"><label>واحد</label><select id="itemUnit"><option value="1">متر</option><option value="2">عدد</option><option value="3">کیلوگرم</option></select></div>
+        <div class="field"><label>رنگ</label><input id="itemColor"></div>
+      </div>
+      <div class="actions"><button class="btn" onclick="saveItem()">ذخیره و ساخت کد</button></div>
+    </div>
+    <div class="panel"><h2>فهرست اقلام</h2><div class="tablewrap"><table><thead><tr><th>کد</th><th>شرح</th><th>نوع</th><th>واحد</th><th>بارکد</th><th>عملیات</th></tr></thead><tbody id="itemsTable"></tbody></table></div></div>
+  </section>
+
+  <section id="bom" class="page hidden">
+    <div class="panel">
+      <h2>ساخت BOM</h2>
+      <div class="formgrid"><div class="field"><label>محصول</label><select id="bomProduct" onchange="loadBomEditor()"></select></div><div class="field"><label>توضیحات</label><input id="bomNotes"></div></div>
+      <div style="margin-top:14px"><div class="section-title"><strong>مواد BOM</strong><button class="btn light" onclick="addBomRow()">+ افزودن قلم</button></div><div id="bomRows"></div></div>
+      <div class="actions"><button class="btn" onclick="saveBom()">ذخیره نسخه جدید BOM</button></div>
+    </div>
+    <div class="panel"><h2>Alternative</h2><p style="color:#667085;font-size:12px">ساختار Alternative در دیتابیس آماده است. قطعه جایگزین در زمان کنترل/ثبت تولید بررسی می‌شود.</p></div>
+  </section>
+
+  <section id="stock" class="page hidden">
+    <div class="panel">
+      <h2>گردش انبار</h2>
+      <div class="formgrid">
+        <div class="field"><label>قطعه</label><select id="stockItem"></select></div>
+        <div class="field"><label>نوع گردش</label><select id="stockType"><option value="IN">ورود</option><option value="OUT">خروج دستی</option><option value="SCRAP">ضایعات</option><option value="ADJUSTMENT">اصلاح موجودی</option></select></div>
+        <div class="field"><label>مقدار</label><input id="stockQty" type="number" min="0" step="0.01"></div>
+        <div class="field"><label>علت / توضیح</label><input id="stockReason"></div>
+      </div>
+      <div class="actions"><button class="btn" onclick="saveStock()">ثبت گردش</button></div>
+    </div>
+    <div class="panel"><h2>موجودی فعلی</h2><div class="tablewrap"><table><thead><tr><th>کد</th><th>شرح</th><th>موجودی</th><th>واحد</th></tr></thead><tbody id="stockTable"></tbody></table></div></div>
+  </section>
+
+  <section id="production" class="page hidden">
+    <div class="panel">
+      <h2>برنامه تولید روزانه</h2>
+      <div class="formgrid">
+        <div class="field"><label>تاریخ</label><input id="prodDate" type="date"></div>
+        <div class="field"><label>محصول</label><select id="prodProduct" onchange="showProdBom()"></select></div>
+        <div class="field"><label>تعداد</label><input id="prodQty" type="number" min="1" step="1" value="1"></div>
+        <div class="field"><label>خط تولید</label><select id="prodLine"><option value="1">خط ۱ - برشکاری</option><option value="2">خط ۲ - خیاطی</option></select></div>
+        <div class="field"><label>توضیحات</label><input id="prodNotes"></div>
+      </div>
+      <div id="prodBom" class="panel hidden" style="margin-top:12px"></div>
+      <div class="actions"><button class="btn" onclick="createProduction()">ثبت برنامه و کنترل موجودی</button></div>
+      <div id="checkResult" style="margin-top:12px"></div>
+    </div>
+    <div class="panel"><div class="section-title"><h2>برنامه‌های تولید</h2><button class="btn light" onclick="loadProduction()">بازخوانی</button></div><div class="tablewrap"><table><thead><tr><th>شماره</th><th>تاریخ</th><th>محصول</th><th>تعداد</th><th>خط</th><th>وضعیت</th><th>عملیات</th></tr></thead><tbody id="productionTable"></tbody></table></div></div>
+  </section>
+</main>
+</div>
+<div id="toast" class="toast"></div>
+<script>
+const API = window.NINITO_API || 'https://lively-field-5ce6.workers.dev/api';
+const $=id=>document.getElementById(id);
+const fa=n=>new Intl.NumberFormat('fa-IR').format(n);
+async function api(path,opt={}){const r=await fetch(API+'/'+path,{headers:{'content-type':'application/json'},...opt});const d=await r.json().catch(()=>({error:'پاسخ نامعتبر'}));if(!r.ok)throw new Error(d.error||'خطا');return d}
+function toast(s){const t=$('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',3200)}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+function showPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));$(p).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));$('title').textContent={dashboard:'داشبورد',items:'کالا و مواد',bom:'BOM',stock:'انبار',production:'برنامه تولید'}[p];if(p==='dashboard')loadDash();if(p==='items')loadItems();if(p==='bom')loadBomInit();if(p==='stock')loadStock();if(p==='production')loadProductionInit()}
+async function loadDash(){try{const d=await api('dashboard');$('mItems').textContent=fa(d.items);$('mProducts').textContent=fa(d.products);$('mMaterials').textContent=fa(d.materials);$('mOrders').textContent=fa(d.todayOrders)}catch(e){toast(e.message)}}
+async function loadItems(){try{const rows=await api('items');$('itemsTable').innerHTML=rows.map(x=>`<tr><td>${x.item_code}</td><td>${x.name}</td><td>${x.item_type==='PRODUCT'?'محصول':'ماده اولیه'}</td><td>${x.symbol}</td><td>${x.barcode||''}</td><td><button class="btn danger" onclick="delItem(${x.id})">حذف موقت</button></td></tr>`).join('')}catch(e){toast(e.message)}}
+async function saveItem(){try{const d=await api('items',{method:'POST',body:JSON.stringify({name:$('itemName').value,item_type:$('itemType').value,unit_id:Number($('itemUnit').value),color:$('itemColor').value})});toast('ثبت شد: '+d.item_code);$('itemName').value='';$('itemColor').value='';loadItems()}catch(e){toast(e.message)}}
+async function delItem(id){if(!confirm('حذف موقت این قلم انجام شود؟'))return;try{await api('items/'+id,{method:'DELETE'});loadItems();toast('حذف موقت انجام شد')}catch(e){toast(e.message)}}
+async function loadBomInit(){const p=await api('products');$('bomProduct').innerHTML=p.map(x=>`<option value="${x.id}">${x.item_code} — ${x.name}</option>`).join('');loadBomEditor()}
+async function loadBomEditor(){const r=await api('bom/'+$('bomProduct').value);$('bomRows').innerHTML='';(r.items||[]).forEach(x=>addBomRow(x));if(!(r.items||[]).length)addBomRow()}
+async function addBomRow(x={}){const mats=await api('materials');const row=document.createElement('div');row.className='bomrow';row.innerHTML=`<select class="brmat">${mats.map(m=>`<option value="${m.id}" ${m.id==x.material_id?'selected':''}>${m.item_code} — ${m.name}</option>`).join('')}</select><input class="brqty" type="number" step="0.01" min="0" value="${x.qty||1}"><button class="btn light" type="button">حذف</button>`;row.querySelector('button').onclick=()=>row.remove();$('bomRows').appendChild(row)}
+async function saveBom(){try{const items=[...document.querySelectorAll('.bomrow')].map(r=>({material_id:Number(r.querySelector('.brmat').value),qty:Number(r.querySelector('.brqty').value)}));const d=await api('bom',{method:'POST',body:JSON.stringify({product_id:Number($('bomProduct').value),notes:$('bomNotes').value,items})});toast('BOM نسخه '+d.version+' ثبت شد');loadBomEditor()}catch(e){toast(e.message)}}
+async function loadStock(){try{const rows=await api('stock');$('stockTable').innerHTML=rows.map(x=>`<tr><td>${x.item_code}</td><td>${x.name}</td><td><strong>${fa(x.qty)}</strong></td><td>${x.symbol}</td></tr>`).join('');const items=await api('materials');$('stockItem').innerHTML=items.map(x=>`<option value="${x.id}">${x.item_code} — ${x.name}</option>`).join('')}catch(e){toast(e.message)}}
+async function saveStock(){try{await api('stock',{method:'POST',body:JSON.stringify({item_id:Number($('stockItem').value),movement_type:$('stockType').value,quantity:Number($('stockQty').value),reason:$('stockReason').value})});toast('گردش انبار ثبت شد');$('stockQty').value='';loadStock()}catch(e){toast(e.message)}}
+async function loadProductionInit(){const p=await api('products');$('prodProduct').innerHTML=p.map(x=>`<option value="${x.id}">${x.item_code} — ${x.name}</option>`).join('');$('prodDate').value=new Date().toISOString().slice(0,10);showProdBom();loadProduction()}
+async function showProdBom(){try{const r=await api('bom/'+$('prodProduct').value);$('prodBom').classList.remove('hidden');$('prodBom').innerHTML='<b>BOM فعال</b><table><thead><tr><th>ماده</th><th>ضریب مصرف</th></tr></thead><tbody>'+(r.items||[]).map(x=>`<tr><td>${x.item_code} — ${x.name}</td><td>${x.qty}</td></tr>`).join('')+'</tbody></table>'}catch(e){toast(e.message)}}
+async function createProduction(){try{const d=await api('production',{method:'POST',body:JSON.stringify({production_date:$('prodDate').value,product_id:Number($('prodProduct').value),quantity:Number($('prodQty').value),line_id:Number($('prodLine').value),notes:$('prodNotes').value})});const bad=d.check.filter(x=>!x.covered);$('checkResult').innerHTML=bad.length?`<div class="badge bad">تولید قابل انجام نیست</div><ul>${bad.map(x=>`<li>${x.item} (${x.code}) — کسری ${x.shortage}</li>`).join('')}</ul>`:`<div class="badge ok">موجودی برای تولید کافی است — شماره ${d.order_no}</div>`;loadProduction()}catch(e){toast(e.message)}}
+async function loadProduction(){try{const rows=await api('production');$('productionTable').innerHTML=rows.map(x=>`<tr><td>${x.order_no}</td><td>${x.production_date}</td><td>${x.product_name}</td><td>${fa(x.quantity)}</td><td>${x.line_name}</td><td><span class="badge ${x.status==='COMPLETED'?'ok':''}">${x.status}</span></td><td>${x.status!=='COMPLETED'?`<button class="btn ok" onclick="completeProduction(${x.id})">ثبت تولید</button>`:'—'}</td></tr>`).join('')}catch(e){toast(e.message)}}
+async function completeProduction(id){if(!confirm('تولید ثبت شود و مواد طبق BOM از انبار کسر شوند؟'))return;try{await api('production/'+id+'/complete',{method:'POST',body:'{}'});toast('تولید ثبت شد و مصرف مواد کسر شد');loadProduction();loadDash()}catch(e){toast(e.message)}}
+showPage('dashboard');
+</script>
+</body>
+</html>
