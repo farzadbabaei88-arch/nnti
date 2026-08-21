@@ -1,4 +1,4 @@
-name = "ninitoapp"
+name = "lively-field-5ce6"
 main = "workers.js"
 compatibility_date = "2026-08-21"
 
@@ -6,8 +6,8 @@ compatibility_date = "2026-08-21"
 directory = "."
 
 [[d1_databases]]
-binding = "DB"
-database_name = "ninitodb"
+binding = "ninito"
+database_name = "ninito"
 database_id = "dfaaabcc-99b4-4e00-8870-b8e2f45de625"
 
 # Optional:
