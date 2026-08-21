@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>نینیتو | مدیریت تولید و انبار</title>
+<style>
+*{box-sizing:border-box}html{font-size:16px}body{margin:0;background:#f5f7f9;color:#17202a;font-family:Tahoma,Arial,sans-serif;overflow-x:hidden}.app{min-height:100vh;display:grid;grid-template-columns:260px 1fr}.side{background:#111;color:#fff;padding:20px;position:sticky;top:0;height:100vh}.brand{font-weight:900;font-size:20px;margin-bottom:25px}.nav button{display:block;width:100%;text-align:right;background:transparent;color:#d9dde2;border:0;padding:13px 12px;border-radius:12px;margin:4px 0;cursor:pointer;font:inherit}.nav button.active,.nav button:hover{background:#fff;color:#111}.logout{margin-top:30px!important;background:#272727!important}.main{padding:22px;min-width:0}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:18px}.userbox{background:#fff;border:1px solid #e0e5ea;padding:10px 14px;border-radius:14px}.view{display:none}.view.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card{background:#fff;border:1px solid #e0e5ea;border-radius:18px;padding:17px}.stat b{font-size:26px;display:block;margin-top:8px}.muted{color:#7b8792;font-size:12px}.toolbar{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}.btn{border:0;border-radius:11px;padding:10px 14px;background:#111;color:#fff;cursor:pointer;font-weight:700}.btn.alt{background:#e9edf1;color:#18212b}.btn.danger{background:#a62b2b}.btn.small{padding:7px 10px;font-size:12px}.formgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;min-height:42px;border:1px solid #ccd5dc;border-radius:10px;padding:9px;background:#fff;font:inherit}.field textarea{min-height:75px}.tablewrap{overflow:auto;border:1px solid #e1e6ea;border-radius:14px;background:#fff}table{width:100%;border-collapse:collapse;min-width:720px}th,td{padding:10px;border-bottom:1px solid #edf0f2;text-align:right;font-size:12px;white-space:nowrap}th{background:#f7f8fa}.status{display:inline-block;border-radius:20px;padding:4px 8px;background:#edf0f3}.ok{background:#e7f5ec;color:#16743b}.bad{background:#fff0f0;color:#a52b2b}.modal{position:fixed;inset:0;background:#1118;display:none;align-items:center;justify-content:center;padding:16px;z-index:10}.modal.show{display:flex}.modalbox{width:min(850px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;padding:20px}.modalhead{display:flex;justify-content:space-between;align-items:center}.close{background:#eee;color:#111;border:0;border-radius:10px;padding:8px 12px}.row{display:grid;grid-template-columns:1fr 130px 120px;gap:8px;align-items:end;margin:8px 0}.toast{position:fixed;left:18px;bottom:18px;background:#111;color:#fff;padding:12px 16px;border-radius:12px;display:none;z-index:20}.scanner{display:none;position:fixed;inset:0;background:#000e;z-index:30;align-items:center;justify-content:center}.scanner.show{display:flex}.scanbox{width:min(520px,90%);background:#fff;border-radius:18px;padding:14px}.scanbox video{width:100%;border-radius:12px;background:#111}.dangertext{color:#a52b2b;font-size:12px;margin-top:7px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:repeat(2,1fr)}.app{grid-template-columns:84px 1fr}.side{padding:14px}.brand{font-size:0}.brand:after{content:'ن';font-size:22px}.nav button{font-size:0;text-align:center}.nav button:before{content:'•';font-size:24px}.logout{font-size:0}.logout:before{content:'خ';font-size:20px}}
+@media(max-width:680px){.app{display:block}.side{height:auto;position:sticky;z-index:5;top:0;display:flex;align-items:center;gap:5px;overflow:auto;padding:8px}.brand{margin:0 8px;flex:0 0 auto}.nav{display:flex;gap:4px}.nav button{font-size:11px!important;white-space:nowrap;padding:9px}.nav button:before{display:none}.logout{margin:0!important}.main{padding:12px}.grid,.formgrid{grid-template-columns:1fr}.top{align-items:flex-start}.top h2{font-size:18px}.card{padding:13px}.row{grid-template-columns:1fr 1fr}.row .full{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand">نینیتو</div>
+  <nav class="nav" id="nav">
+    <button data-view="dashboard">داشبورد</button>
+    <button data-view="production">برنامه تولید</button>
+    <button data-view="bom">BOM</button>
+    <button data-view="items">کالا و قطعات</button>
+    <button data-view="warehouse">انبار</button>
+    <button data-view="reports">گزارش‌ها</button>
+    <button data-view="users">کاربران</button>
+    <button data-view="audit">لاگ فعالیت</button>
+    <button id="logoutBtn" class="logout">خروج</button>
+  </nav>
+</aside>
+<main class="main">
+<header class="top"><div><h2 id="pageTitle">داشبورد</h2><div class="muted">کنترل تولید، BOM و موجودی در یک سیستم</div></div><div class="userbox" id="userBox">...</div></header>
+
+<section id="dashboard" class="view active">
+<div class="grid">
+<div class="card stat"><span class="muted">اقلام فعال</span><b id="statItems">—</b></div>
+<div class="card stat"><span class="muted">اقلام زیر حداقل</span><b id="statLow">—</b></div>
+<div class="card stat"><span class="muted">برنامه‌های ۳۰ روز اخیر</span><b id="statPlans">—</b></div>
+<div class="card stat"><span class="muted">تکمیل‌شده</span><b id="statDone">—</b></div>
+</div>
+<div class="card" style="margin-top:14px"><h3>جریان اصلی سیستم</h3><p class="muted">برنامه تولید ← BOM ← کنترل موجودی ← تولید واقعی ← مصرف خودکار ← گزارش قابل ردیابی</p></div>
+</section>
+
+<section id="items" class="view">
+<div class="toolbar"><button class="btn" id="newItemBtn">+ کالای جدید</button><button class="btn alt" id="refreshItems">به‌روزرسانی</button></div>
+<div class="card"><div class="formgrid"><div class="field"><label>جستجو</label><input id="itemSearch" placeholder="شرح، کد یا بارکد"></div><div class="field"><label>نوع</label><select id="itemType"><option value="">همه</option><option value="product">محصول</option><option value="material">مواد اولیه</option><option value="component">قطعه</option><option value="supply">ملزومات</option></select></div></div></div>
+<div class="tablewrap" style="margin-top:12px"><table><thead><tr><th>کد</th><th>شرح</th><th>نوع</th><th>واحد</th><th>بارکد</th><th>عملیات</th></tr></thead><tbody id="itemsBody"></tbody></table></div>
+</section>
+
+<section id="bom" class="view">
+<div class="toolbar"><button class="btn" id="newBomBtn">+ BOM جدید/ویرایش</button></div>
+<div class="card"><div class="field"><label>محصول</label><select id="bomProduct"></select></div><div id="bomView" style="margin-top:12px"></div></div>
+</section>
+
+<section id="production" class="view">
+<div class="toolbar"><button class="btn" id="newPlanBtn">+ برنامه تولید روزانه</button><button class="btn alt" id="refreshPlans">به‌روزرسانی</button></div>
+<div class="tablewrap"><table><thead><tr><th>تاریخ</th><th>وضعیت</th><th>تعداد ردیف</th><th>ایجادکننده</th><th>عملیات</th></tr></thead><tbody id="plansBody"></tbody></table></div>
+</section>
+
+<section id="warehouse" class="view">
+<div class="toolbar"><button class="btn" id="receiptBtn">+ ورود کالا</button><button class="btn alt" id="adjustBtn">کاهش/اصلاح دستی</button><button class="btn alt" id="wasteBtn">ثبت ضایعات</button><button class="btn alt" id="scanBtn">اسکن بارکد</button></div>
+<div class="tablewrap"><table><thead><tr><th>کد</th><th>شرح</th><th>موجودی</th><th>واحد</th><th>حداقل</th><th>وضعیت</th></tr></thead><tbody id="invBody"></tbody></table></div>
+</section>
+
+<section id="reports" class="view">
+<div class="toolbar"><button class="btn alt" id="refreshReports">به‌روزرسانی گزارش</button></div>
+<div class="card"><h3>اقلام زیر حداقل</h3><div class="tablewrap"><table><thead><tr><th>کد</th><th>شرح</th><th>موجودی</th><th>حداقل</th></tr></thead><tbody id="lowBody"></tbody></table></div></div>
+<div class="card" style="margin-top:12px"><h3>گردش اخیر انبار</h3><div class="tablewrap"><table><thead><tr><th>زمان</th><th>کد</th><th>شرح</th><th>نوع</th><th>مقدار</th><th>علت</th></tr></thead><tbody id="movBody"></tbody></table></div></div>
+</section>
+
+<section id="users" class="view">
+<div class="toolbar"><button class="btn" id="newUserBtn">+ کاربر جدید</button><button class="btn alt" id="roleAccessBtn">مدیریت دسترسی نقش‌ها</button><button class="btn alt" id="refreshUsers">به‌روزرسانی</button></div>
+<div class="tablewrap"><table><thead><tr><th>کاربر</th><th>نام</th><th>نقش</th><th>وضعیت</th><th>آخرین ورود</th><th>عملیات</th></tr></thead><tbody id="usersBody"></tbody></table></div>
+</section>
+
+<section id="audit" class="view">
+<div class="toolbar"><button class="btn alt" id="refreshAudit">به‌روزرسانی</button></div>
+<div class="tablewrap"><table><thead><tr><th>زمان</th><th>کاربر</th><th>عملیات</th><th>موجودیت</th><th>جزئیات</th></tr></thead><tbody id="auditBody"></tbody></table></div>
+</section>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="modalbox"><div class="modalhead"><h3 id="modalTitle"></h3><button class="close" id="closeModal">بستن</button></div><div id="modalBody"></div></div></div>
+<div class="toast" id="toast"></div>
+<div class="scanner" id="scanner"><div class="scanbox"><video id="video" playsinline></video><button class="btn" id="closeScanner">بستن اسکنر</button><div class="muted" id="scanMsg">بارکد را مقابل دوربین قرار دهید.</div></div></div>
+
+<script>
+const S={user:null,permissions:new Set(),csrf:null,items:[],units:[],roles:[],rolePermissions:[]};
+const $=id=>document.getElementById(id);
+function can(p){return S.permissions.has(p)}
+function toast(t,bad=false){const x=$('toast');x.textContent=t;x.style.background=bad?'#9d2a2a':'#111';x.style.display='block';setTimeout(()=>x.style.display='none',2800)}
+async function api(path,opt={}){const o={...opt,headers:{'content-type':'application/json',...(opt.headers||{})}};if(S.csrf)o.headers['x-csrf-token']=S.csrf;const r=await fetch(path,o);const d=await r.json().catch(()=>({success:false,error:{message:'پاسخ نامعتبر سرور'}}));if(r.status===401){location.replace('/login.html');throw new Error('نشست منقضی شد.')}if(!r.ok||!d.success)throw new Error(d?.error?.message||'عملیات ناموفق بود');return d}
+function modal(title,html){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modal').classList.add('show')}
+function closeModal(){$('modal').classList.remove('show')}
+$('closeModal').onclick=closeModal;
+function nav(view){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));$(view).classList.add('active');document.querySelectorAll('#nav button[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===view));$('pageTitle').textContent=document.querySelector(`#nav button[data-view="${view}"]`)?.textContent||view;loadView(view)}
+document.querySelectorAll('#nav button[data-view]').forEach(b=>b.onclick=()=>nav(b.dataset.view));
+$('logoutBtn').onclick=async()=>{try{await api('/api/auth/logout',{method:'POST'});location.replace('/login.html')}catch(e){toast(e.message,true)}};
+
+async function init(){
+ const m=await api('/api/auth/me');S.user=m.user;S.permissions=new Set(m.permissions);S.csrf=m.csrf;
+ $('userBox').textContent=`${S.user.full_name} | ${S.user.role_title}`;
+ document.querySelectorAll('#nav button[data-view]').forEach(b=>{const map={dashboard:'dashboard.view',production:'production.view',bom:'bom.view',items:'items.view',warehouse:'warehouse.view',reports:'reports.view',users:'users.manage',audit:'audit.view'};if(!can(map[b.dataset.view]))b.style.display='none'});
+ nav('dashboard');
+}
+async function loadView(v){
+ try{
+  if(v==='dashboard')return loadDashboard();
+  if(v==='items')return loadItems();
+  if(v==='bom')return loadBom();
+  if(v==='production')return loadPlans();
+  if(v==='warehouse')return loadInventory();
+  if(v==='reports')return loadReports();
+  if(v==='users')return loadUsers();
+  if(v==='audit')return loadAudit();
+ }catch(e){toast(e.message,true)}
+}
+async function loadDashboard(){
+ const [items,inv,r]=await Promise.all([api('/api/items'),api('/api/inventory'),api('/api/reports')]);
+ $('statItems').textContent=items.items.length;$('statLow').textContent=inv.inventory.filter(x=>Number(x.balance)<Number(x.min_stock)).length;
+ $('statPlans').textContent=r.production30d.total||0;$('statDone').textContent=r.production30d.completed||0;
+}
+function typeText(x){return {product:'محصول',material:'مواد اولیه',component:'قطعه',supply:'ملزومات'}[x]||x}
+async function loadItems(){
+ const q=encodeURIComponent($('itemSearch').value||''),t=encodeURIComponent($('itemType').value||'');const d=await api(`/api/items?q=${q}&type=${t}`);S.items=d.items;
+ $('itemsBody').innerHTML=d.items.map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${typeText(x.item_type)}</td><td>${x.unit_symbol}</td><td>${x.barcode}</td><td>${can('items.update')?`<button class="btn small" onclick="editItem(${x.id})">ویرایش</button>`:''} ${can('items.delete')?`<button class="btn small danger" onclick="delItem(${x.id},false)">حذف موقت</button> ${S.user?.role==='admin'?`<button class="btn small danger" onclick="delItem(${x.id},true)">حذف دائم</button>`:''}:''}</td></tr>`).join('');
+}
+$('itemSearch').oninput=()=>loadItems();$('itemType').onchange=()=>loadItems();$('refreshItems').onclick=loadItems;
+$('newItemBtn').onclick=()=>showItem();
+function showItem(x=null){
+ const units=S.units.length?S.units:[];modal(x?'ویرایش کالا':'کالای جدید',`<form id="itemForm"><div class="formgrid">
+ <div class="field"><label>شرح کالا</label><input name="name" value="${x?.name||''}" required></div>
+ <div class="field"><label>نوع کالا</label><select name="item_type" ${x?'disabled':''}><option value="material">مواد اولیه</option><option value="component">قطعه</option><option value="product">محصول</option><option value="supply">ملزومات</option></select></div>
+ <div class="field"><label>واحد</label><select name="unit_id">${units.map(u=>`<option value="${u.id}" ${x?.unit_id==u.id?'selected':''}>${u.name}</option>`).join('')}</select></div>
+ <div class="field"><label>رنگ</label><input name="color" value="${x?.color||''}"></div>
+ <div class="field"><label>طرح</label><input name="pattern" value="${x?.pattern||''}"></div>
+ <div class="field"><label>بارکد</label><input name="barcode" value="${x?.barcode||''}" placeholder="خالی = کد خودکار"></div>
+ <div class="field"><label>حداقل موجودی</label><input name="min_stock" type="number" step="0.001" value="${x?.min_stock||0}"></div>
+ </div><button class="btn" type="submit">ذخیره</button></form>`);
+ $('itemForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target),o=Object.fromEntries(f);if(!x)o.item_type=e.target.item_type.value;o.unit_id=Number(o.unit_id);o.min_stock=Number(o.min_stock);try{const d=await api(x?`/api/items/${x.id}`:'/api/items',{method:x?'PUT':'POST',body:JSON.stringify(o)});toast(`ذخیره شد${d.code?' | '+d.code:''}`);closeModal();loadItems()}catch(err){toast(err.message,true)}}
+}
+window.editItem=id=>showItem(S.items.find(x=>x.id===id));
+window.delItem=async(id,permanent=false)=>{if(!confirm(permanent?'حذف دائم انجام شود؟ این عملیات در صورت داشتن سابقه ممکن است رد شود.':'حذف موقت کالا انجام شود؟'))return;try{await api(`/api/items/${id}${permanent?'?permanent=1':''}`,{method:'DELETE'});toast(permanent?'حذف دائم انجام شد':'حذف موقت انجام شد');loadItems()}catch(e){toast(e.message,true)}}
+
+async function loadUnits(){const d=await api('/api/units');S.units=d.units}
+async function loadBom(){await loadItems();const products=S.items.filter(x=>x.item_type==='product');$('bomProduct').innerHTML=products.map(x=>`<option value="${x.id}">${x.code} | ${x.name}</option>`).join('');if(products[0])showBom(products[0].id)}
+$('bomProduct').onchange=()=>showBom(Number($('bomProduct').value));
+async function showBom(pid){const d=await api(`/api/boms?product_id=${pid}`);if(!d.bom){$('bomView').innerHTML='<div class="dangertext">برای این محصول BOM ثبت نشده است.</div>';return}$('bomView').innerHTML=`<h4>${d.bom.product_name}</h4><div class="tablewrap"><table><thead><tr><th>جزء</th><th>مقدار</th><th>واحد</th><th>جایگزین</th></tr></thead><tbody>${d.components.map(c=>`<tr><td>${c.component_code} | ${c.component_name}</td><td>${c.quantity}</td><td>${c.unit_name}</td><td>${c.alternatives.map(a=>a.alternative_name).join('، ')||'—'}</td></tr>`).join('')}</tbody></table></div><button class="btn" style="margin-top:10px" onclick="editBom(${pid})">ویرایش BOM</button>`}
+$('newBomBtn').onclick=()=>editBom(Number($('bomProduct').value));
+window.editBom=async pid=>{await loadItems();const d=await api(`/api/boms?product_id=${pid}`), comps=d.components||[];const mats=S.items.filter(x=>x.item_type!=='product');modal('ساخت / ویرایش BOM',`<form id="bomForm"><div class="field"><label>محصول</label><select id="bfProduct" disabled>${S.items.filter(x=>x.item_type==='product').map(x=>`<option value="${x.id}" ${x.id===pid?'selected':''}>${x.name}</option>`).join('')}</select></div><div id="bomRows"></div><button type="button" class="btn alt" id="addBomRow">+ افزودن جزء</button><button class="btn" type="submit">ذخیره BOM</button></form>`);
+ const rows=$('bomRows');
+ function addAlt(wrap,a={}){
+   const div=document.createElement('div');div.className='row';div.innerHTML=`<div class="field"><label>قطعه جایگزین</label><select class="ba"><option value="">بدون جایگزین</option>${mats.map(x=>`<option value="${x.id}" ${a.alternative_item_id==x.id?'selected':''}>${x.code} | ${x.name}</option>`).join('')}</select></div><div class="field"><label>ضریب جایگزینی</label><input class="bf" type="number" step="0.001" min="0.001" value="${a.conversion_factor||1}"></div><div><button type="button" class="btn danger xa">حذف</button></div>`;div.querySelector('.xa').onclick=()=>div.remove();wrap.appendChild(div);
+ }
+ function addRow(c={}){
+   const div=document.createElement('div');div.className='card';div.style.margin='8px 0';
+   div.innerHTML=`<div class="row"><div class="field"><label>قطعه اصلی</label><select class="bc">${mats.map(x=>`<option value="${x.id}" ${c.component_id==x.id?'selected':''}>${x.code} | ${x.name}</option>`).join('')}</select></div><div class="field"><label>مقدار</label><input class="bq" type="number" step="0.001" min="0.001" value="${c.quantity||1}"></div><div><button type="button" class="btn danger br">حذف جزء</button></div></div><div class="alts"></div><button type="button" class="btn alt aa">+ افزودن جایگزین</button>`;
+   div.querySelector('.br').onclick=()=>div.remove();div.querySelector('.aa').onclick=()=>addAlt(div.querySelector('.alts'));
+   const aa=Array.isArray(c.alternatives)?c.alternatives:[];aa.forEach(addAlt.bind(null,div.querySelector('.alts')));
+   rows.appendChild(div);
+ }
+ if(comps.length)comps.forEach(addRow);else addRow();$('addBomRow').onclick=()=>addRow();
+ $('bomForm').onsubmit=async e=>{e.preventDefault();const cs=[...rows.children].map(r=>{const cid=Number(r.querySelector('.bc').value);return {component_id:cid,quantity:Number(r.querySelector('.bq').value),unit_id:Number(S.items.find(x=>x.id===cid).unit_id),alternatives:[...r.querySelectorAll('.alts .row')].map(a=>({alternative_item_id:Number(a.querySelector('.ba').value),conversion_factor:Number(a.querySelector('.bf').value)})).filter(a=>a.alternative_item_id)}});
+   try{await api('/api/boms',{method:'POST',body:JSON.stringify({product_id:pid,components:cs})});toast('BOM ذخیره شد');closeModal();showBom(pid)}catch(err){toast(err.message,true)}}
+}
+
+async function loadPlans(){const d=await api('/api/production-plans');$('plansBody').innerHTML=d.plans.map(p=>`<tr><td>${p.plan_date}</td><td><span class="status ${p.status==='completed'?'ok':''}">${p.status}</span></td><td>${p.line_count}</td><td>${p.creator||'—'}</td><td><button class="btn small" onclick="planDetails(${p.id},'${p.plan_date}')">جزئیات / ثبت تولید</button> ${p.status!=='completed'&&can('production.manage')?`<button class="btn small danger" onclick="delPlan(${p.id})">حذف</button>`:''}</td></tr>`).join('')}
+$('refreshPlans').onclick=loadPlans;window.delPlan=async id=>{if(!confirm('برنامه حذف شود؟'))return;try{await api(`/api/production-plans/${id}`,{method:'DELETE'});toast('حذف شد');loadPlans()}catch(e){toast(e.message,true)}};
+window.planDetails=async(id,date)=>{
+ const d=await api(`/api/production-plan-items?plan_id=${id}`);
+ modal(`برنامه تولید ${date}`,`<div class="tablewrap"><table><thead><tr><th>محصول</th><th>برنامه</th><th>تکمیل</th><th>خط</th><th>عملیات</th></tr></thead><tbody>${d.items.map(x=>`<tr><td>${x.product_name}</td><td>${x.planned_qty}</td><td>${x.completed_qty}</td><td>${x.line_name||'—'}</td><td>${x.completed_qty<x.planned_qty&&can('production.complete')?`<button class="btn small" onclick="completeProd(${x.id},${x.planned_qty-x.completed_qty})">ثبت تولید واقعی</button>`:'تکمیل شد'}</td></tr>`).join('')}</tbody></table></div>`)
+};
+window.completeProd=async(id,max)=>{
+ const q=prompt(`تعداد تولید واقعی را وارد کنید (حداکثر ${max})`,'1');if(q===null)return;
+ const qty=Number(q);if(!Number.isFinite(qty)||qty<=0||qty>max){toast('تعداد واردشده معتبر نیست.',true);return}
+ try{const d=await api(`/api/production-complete/${id}`,{method:'POST',body:JSON.stringify({quantity:qty})});toast(`تولید ثبت شد. مصرف BOM: ${d.deductions.length} قلم`);closeModal();loadPlans();loadInventory()}catch(e){toast(e.message,true)}
+};
+$('newPlanBtn').onclick=async()=>{await loadItems();const products=S.items.filter(x=>x.item_type==='product'),lines=[['1','خط ۱ | برشکاری'],['2','خط ۲ | خیاطی']];modal('برنامه تولید روزانه',`<form id="planForm"><div class="formgrid"><div class="field"><label>تاریخ</label><input name="plan_date" type="date" value="${new Date().toISOString().slice(0,10)}" required></div></div><div id="planRows"></div><button type="button" class="btn alt" id="addPlanRow">+ محصول</button><button class="btn" type="submit">ذخیره برنامه</button></form>`);const rows=$('planRows');function add(){const d=document.createElement('div');d.className='row';d.innerHTML=`<div class="field"><label>محصول</label><select class="pp">${products.map(x=>`<option value="${x.id}">${x.name}</option>`).join('')}</select></div><div class="field"><label>تعداد</label><input class="pq" type="number" min="1" value="1"></div><div><button type="button" class="btn danger rp">حذف</button></div>`;d.querySelector('.rp').onclick=()=>d.remove();rows.appendChild(d)}add();$('addPlanRow').onclick=add;$('planForm').onsubmit=async e=>{e.preventDefault();const items=[...rows.children].map(r=>({product_id:Number(r.querySelector('.pp').value),planned_qty:Number(r.querySelector('.pq').value),line_id:2}));try{await api('/api/production-plans',{method:'POST',body:JSON.stringify({plan_date:e.target.plan_date.value,items})});toast('برنامه ثبت شد');closeModal();loadPlans()}catch(err){toast(err.message,true)}}}
+
+async function loadInventory(){const d=await api('/api/inventory');$('invBody').innerHTML=d.inventory.map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${x.balance}</td><td>${x.unit_symbol}</td><td>${x.min_stock}</td><td><span class="status ${Number(x.balance)>=Number(x.min_stock)?'ok':'bad'}">${Number(x.balance)>=Number(x.min_stock)?'کافی':'کمبود'}</span></td></tr>`).join('')}
+$('receiptBtn').onclick=()=>inventoryForm('ورود کالا','receipt');
+$('adjustBtn').onclick=()=>inventoryForm('کاهش/اصلاح دستی','adjust');
+$('wasteBtn').onclick=()=>inventoryForm('ثبت ضایعات','waste');
+async function inventoryForm(title,type){await loadItems();const mats=S.items.filter(x=>x.item_type!=='product');modal(title,`<form id="invForm"><div class="formgrid"><div class="field"><label>قطعه/ماده</label><select name="item_id">${mats.map(x=>`<option value="${x.id}">${x.code} | ${x.name}</option>`).join('')}</select></div><div class="field"><label>${type==='adjust'?'مقدار (+ ورود / - کاهش)':'مقدار'}</label><input name="quantity" type="number" step="0.001" required></div><div class="field"><label>علت</label><input name="reason"></div><div class="field"><label>شماره بچ</label><input name="batch_no"></div></div><button class="btn" type="submit">ثبت</button></form>`);$('invForm').onsubmit=async e=>{e.preventDefault();const f=Object.fromEntries(new FormData(e.target));f.item_id=Number(f.item_id);f.quantity=Number(f.quantity);let path=type==='receipt'?'/api/inventory/receipt':type==='adjust'?'/api/inventory/adjust':'/api/inventory/waste';try{await api(path,{method:'POST',body:JSON.stringify(f)});toast('ثبت شد');closeModal();loadInventory()}catch(err){toast(err.message,true)}}}
+$('scanBtn').onclick=startScanner;
+let stream=null;
+async function startScanner(){if(!('BarcodeDetector' in window)){toast('این مرورگر BarcodeDetector را پشتیبانی نمی‌کند؛ ورود کد دستی فعال است.',true);return}try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}});$('video').srcObject=stream;await $('video').play();$('scanner').classList.add('show');const detector=new BarcodeDetector();const tick=async()=>{if(!$('scanner').classList.contains('show'))return;try{const codes=await detector.detect($('video'));if(codes.length){toast('بارکد خوانده شد: '+codes[0].rawValue);$('scanMsg').textContent=codes[0].rawValue}}catch{}requestAnimationFrame(tick)};tick()}catch(e){toast('دسترسی دوربین ممکن نشد.',true)}}
+$('closeScanner').onclick=()=>{$('scanner').classList.remove('show');if(stream)stream.getTracks().forEach(t=>t.stop());stream=null};
+
+async function loadReports(){const d=await api('/api/reports');const low=d.inventory.filter(x=>Number(x.balance)<Number(x.min_stock));$('lowBody').innerHTML=low.map(x=>`<tr><td>${x.code}</td><td>${x.name}</td><td>${x.balance}</td><td>${x.min_stock}</td></tr>`).join('');$('movBody').innerHTML=d.recentMovements.map(x=>`<tr><td>${x.created_at}</td><td>${x.code}</td><td>${x.name}</td><td>${x.movement_type}</td><td>${x.quantity} ${x.unit_symbol}</td><td>${x.reason||''}</td></tr>`).join('')}
+$('refreshReports').onclick=loadReports;
+async function loadUsers(){const d=await api('/api/users');$('usersBody').innerHTML=d.users.map(x=>`<tr><td>${x.username}</td><td>${x.full_name}</td><td>${x.role_title}</td><td>${x.is_active?'فعال':'غیرفعال'}</td><td>${x.last_login_at||'—'}</td><td><button class="btn small" onclick="editUser(${x.id})">ویرایش</button></td></tr>`).join('')}
+$('roleAccessBtn').onclick=async()=>{
+ const d=await api('/api/roles');S.roles=d.roles;S.rolePermissions=d.rolePermissions;
+ modal('مدیریت دسترسی نقش‌ها',`<div class="field"><label>نقش</label><select id="rolePick">${d.roles.map(r=>`<option value="${r.id}">${r.title}</option>`).join('')}</select></div><div id="permBox" style="margin-top:12px"></div>`);
+ const render=()=>{
+  const rid=Number($('rolePick').value), selected=new Set(d.rolePermissions.filter(x=>x.role_id===rid).map(x=>x.permission_id));
+  $('permBox').innerHTML=d.permissions.map(p=>`<label style="display:flex;gap:8px;align-items:center;padding:8px;border-bottom:1px solid #eee"><input type="checkbox" data-perm="${p.id}" ${selected.has(p.id)?'checked':''}> ${p.title} <span class="muted">${p.code}</span></label>`).join('')+`<button class="btn" id="saveRolePerm" style="margin-top:12px">ذخیره دسترسی</button>`;
+  $('saveRolePerm').onclick=async()=>{
+    const codes=[...document.querySelectorAll('#permBox input[data-perm]:checked')].map(el=>d.permissions.find(p=>p.id===Number(el.dataset.perm)).code);
+    try{await api(`/api/roles/${rid}`,{method:'PUT',body:JSON.stringify({permission_codes:codes})});toast('دسترسی نقش ذخیره شد');closeModal()}catch(e){toast(e.message,true)}
+  };
+ };
+ $('rolePick').onchange=render;render();
+};
+$('refreshUsers').onclick=loadUsers;
+window.editUser=async id=>{
+ const [u,r]=await Promise.all([api('/api/users'),api('/api/roles')]);const x=u.users.find(v=>v.id===id);
+ modal('ویرایش کاربر',`<form id="editUserForm"><div class="formgrid"><div class="field"><label>نام کاربری</label><input value="${x.username}" disabled></div><div class="field"><label>نام کامل</label><input name="full_name" value="${x.full_name}" required></div><div class="field"><label>نقش</label><select name="role_id">${r.roles.map(v=>`<option value="${v.id}" ${v.id===x.role_id?'selected':''}>${v.title}</option>`).join('')}</select></div><div class="field"><label>رمز جدید (اختیاری)</label><input name="password" type="password" minlength="8"></div><div class="field"><label>وضعیت</label><select name="is_active"><option value="1" ${x.is_active?'selected':''}>فعال</option><option value="0" ${!x.is_active?'selected':''}>غیرفعال</option></select></div></div><button class="btn" type="submit">ذخیره تغییرات</button></form>`);
+ $('editUserForm').onsubmit=async e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target));o.role_id=Number(o.role_id);o.is_active=o.is_active==='1';if(!o.password)delete o.password;try{await api(`/api/users/${id}`,{method:'PUT',body:JSON.stringify(o)});toast('کاربر ویرایش شد');closeModal();loadUsers()}catch(err){toast(err.message,true)}}
+};
+$('newUserBtn').onclick=async()=>{const r=await api('/api/roles');modal('کاربر جدید',`<form id="userForm"><div class="formgrid"><div class="field"><label>نام کاربری</label><input name="username" required></div><div class="field"><label>نام کامل</label><input name="full_name" required></div><div class="field"><label>نقش</label><select name="role_id">${r.roles.map(x=>`<option value="${x.id}">${x.title}</option>`).join('')}</select></div><div class="field"><label>رمز اولیه</label><input name="password" type="password" minlength="8" required></div></div><button class="btn" type="submit">ایجاد کاربر</button></form>`);$('userForm').onsubmit=async e=>{e.preventDefault();const o=Object.fromEntries(new FormData(e.target));o.role_id=Number(o.role_id);try{await api('/api/users',{method:'POST',body:JSON.stringify(o)});toast('کاربر ایجاد شد');closeModal();loadUsers()}catch(err){toast(err.message,true)}}}
+async function loadAudit(){const d=await api('/api/audit');$('auditBody').innerHTML=d.logs.map(x=>`<tr><td>${x.created_at}</td><td>${x.username||'سیستم'}</td><td>${x.action}</td><td>${x.entity_type||''} #${x.entity_id||''}</td><td>${x.details_json||''}</td></tr>`).join('')}
+$('refreshAudit').onclick=loadAudit;
+
+async function boot(){try{await loadUnits();await init()}catch(e){if(e.message.includes('نشست'))return;toast(e.message,true)}}
+boot();
+</script>
+</body>
+</html>
